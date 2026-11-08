@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>window.STANDALONE=true</script>
+</head>
+<body>
+<title>Khẩu ngữ cấp tốc Bài 7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Noto+Serif:wght@400;600&family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+/* Layout: the user's sketch. Dashed capsule of pinyin boxes on the left, green-framed lesson sheet on the right with two big corners. */
+:root {
+  --bg: #fbfdfb; --sheet: #ffffff; --ink: #1d2a24; --muted: #5d6e65; --line: #cddad2;
+  --green: #14894a; --green-soft: #e3f4ea; --blue: #2f5a93; --orange: #d9700f; --orange-soft: #fdeedd;
+  --on-green: #ffffff;
+  --bad: #c0392b; --bad-soft: #f9e0dc;
+  --menu-red: #8f2c25; --menu-gold: #b8860b; --menu-paper: #fdf8ee; --on-red: #ffffff;
+  --body: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --pinyin: "Noto Serif", Georgia, "Times New Roman", serif;
+  --han: "Noto Serif SC", "Songti SC", "SimSun", serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111815; --sheet: #17201c; --ink: #e6efe9; --muted: #9db0a5; --line: #33423a;
+  --green: #4fce8a; --green-soft: #1d3a2b; --blue: #8db4e6; --orange: #f2a152; --orange-soft: #3c2a18;
+  --on-green: #0d1a13; --bad: #f0806f; --bad-soft: #4a2520; --menu-red: #e58a7f; --menu-gold: #e0b84f; --menu-paper: #211a15; --on-red: #1d1410; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111815; --sheet: #17201c; --ink: #e6efe9; --muted: #9db0a5; --line: #33423a;
+  --green: #4fce8a; --green-soft: #1d3a2b; --blue: #8db4e6; --orange: #f2a152; --orange-soft: #3c2a18;
+  --on-green: #0d1a13; --bad: #f0806f; --bad-soft: #4a2520; --menu-red: #e58a7f; --menu-gold: #e0b84f; --menu-paper: #211a15; --on-red: #1d1410; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55 }
+button { font: inherit; color: inherit; cursor: pointer }
+button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px }
+
+.page { max-width: 1120px; margin-inline: auto; padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 16px }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px }
+h1 { margin: 0; font-size: 1.25rem; font-weight: 700 }
+.topics { display: flex; flex-wrap: wrap; gap: 8px }
+.topic { background: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: .9rem; font-weight: 500 }
+.topic:hover { border-color: var(--green) }
+.topic[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--on-green) }
+.note { margin: 0; font-size: .85rem; color: var(--muted) }
+
+.study { display: grid; grid-template-columns: 212px minmax(0, 1fr); gap: 24px; align-items: start }
+
+.words { border: 1.5px dashed var(--blue); border-radius: 32px; padding: 16px 12px; display: grid; gap: 4px;
+  position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 24px); overflow-y: auto }
+.word { background: none; border: 1px solid transparent; border-radius: 10px; padding: 8px 12px; text-align: left;
+  font-family: var(--pinyin); font-size: 1.1rem; line-height: 1.3; color: var(--ink) }
+.word:hover { background: var(--green-soft) }
+.word[aria-current="true"] { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600 }
+
+.sheet { background: var(--sheet); border: 1.5px solid var(--green); border-radius: 64px 2px 64px 2px;
+  padding: 28px clamp(20px, 5vw, 56px) 32px; display: grid; gap: 24px; min-width: 0 }
+
+.head { text-align: center; display: grid; gap: 2px }
+.head .py { font-family: var(--pinyin); font-size: 1.05rem; color: var(--muted) }
+.head .py span { font-family: var(--han); margin-left: .5em }
+h2 { margin: 0; color: var(--green); font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 700; font-style: italic; line-height: 1.25; text-wrap: balance }
+
+.pic { width: 280px; max-width: 100%; aspect-ratio: 4 / 3; justify-self: center; border: 1px solid var(--line); border-radius: 4px;
+  display: grid; place-items: center; overflow: hidden; color: var(--muted); font-size: .9rem; text-align: center; padding: 12px }
+.pic.has { padding: 0 }
+.pic img { width: 100%; height: 100%; object-fit: cover; display: block }
+
+.block { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: start }
+.block h3 { margin: 0; padding-top: 7px; font-size: .9rem; font-weight: 700; font-style: italic; color: var(--green) }
+.lines { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; min-width: 0 }
+.line { display: grid; grid-template-columns: 16px 22px minmax(0, 1fr) auto; column-gap: 8px; align-items: start }
+.tr .line { grid-template-columns: 16px minmax(0, 1fr) }
+.arrow { color: var(--green); padding-top: 7px }
+.arrow svg { display: block }
+.num { font-family: var(--pinyin); font-size: 1.05rem; padding-top: 3px; font-variant-numeric: tabular-nums }
+.bullet { padding-top: 4px; color: var(--muted) }
+.body { min-width: 0; display: grid; gap: 4px; justify-items: start }
+.sent { font-size: 1.05rem; padding-top: 3px }
+.sent.pin { font-family: var(--pinyin) }
+.sent mark, .ans mark { background: none; color: var(--green); font-weight: 600 }
+.han { font-family: var(--han); color: var(--muted) }
+.ans { font-family: var(--pinyin); border-left: 2px solid var(--green); padding-left: 10px; display: grid }
+
+.show { background: none; border: 1px solid var(--green); color: var(--green); border-radius: 6px; padding: 4px 12px; font-size: .85rem; font-weight: 600 }
+.show:hover { background: var(--green-soft) }
+
+.say { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--orange-soft); color: var(--orange); display: grid; place-items: center }
+.say:hover:not(:disabled) { outline: 1px solid var(--orange) }
+.say:disabled { opacity: .45; cursor: not-allowed }
+.say.on { background: var(--orange); color: var(--sheet) }
+
+.empty { color: var(--muted); margin: 0; padding-top: 5px; font-size: .95rem }
+.nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums }
+.nav button { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; color: var(--ink) }
+.nav button:hover:not(:disabled) { border-color: var(--green) }
+.nav button:disabled { opacity: .4; cursor: default }
+
+/* Online menu */
+.menu { background: var(--menu-paper); border-block: 2px solid var(--menu-red); padding: 20px clamp(12px, 3vw, 28px); display: grid; gap: 20px; max-width: 640px; width: 100%; justify-self: center; min-width: 0 }
+.mhead { justify-self: center; background: none; border: 0; padding: 4px 16px; color: var(--menu-red); font-family: var(--pinyin); font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.2 }
+.mhint { margin: 0; text-align: center; font-size: .9rem; color: var(--muted) }
+.mgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px }
+.mgroup { grid-column: 1 / -1; display: grid; gap: 4px; min-width: 0 }
+.mgroup.half { grid-column: auto }
+.mchips { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding-bottom: 6px }
+.mchip { border: 0; border-radius: 999px; padding: 4px 14px; background: var(--menu-red); color: var(--on-red); font-family: var(--pinyin); font-weight: 600 }
+.mchip.gold { background: var(--menu-gold) }
+.mrow { background: none; border: 0; border-radius: 6px; width: 100%; text-align: left; padding: 6px 8px; display: grid; grid-template-columns: minmax(0, auto) minmax(12px, 1fr) auto; column-gap: 8px; align-items: baseline }
+.mrow:hover, .mhead:hover, .mrow.on { background: var(--orange-soft) }
+.mchip:hover, .mchip.on { outline: 2px solid var(--orange); outline-offset: 1px }
+.mhead.on { background: var(--orange-soft) }
+.mname { font-family: var(--pinyin); font-weight: 600; font-size: 1.1rem; color: var(--ink) }
+.mname span { font-family: var(--han); font-weight: 400; font-size: .9rem; color: var(--muted); margin-left: .4em }
+.mdots { border-bottom: 2px dotted var(--menu-gold); transform: translateY(-4px) }
+.mprice { color: var(--menu-red); font-weight: 700; font-variant-numeric: tabular-nums }
+.mvi { grid-column: 1 / -1; font-size: .85rem; color: var(--muted) }
+.dlrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px }
+.dlnote { flex-basis: 100%; min-height: 1.3em; font-size: .9rem; color: var(--muted) }
+.mstatus { min-height: 1.4em; margin: 0; text-align: center; font-size: .9rem; color: var(--muted) }
+
+/* Video review */
+.vstudy { display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); gap: 28px; align-items: start }
+.vside { display: grid; gap: 8px; position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)) }
+.vbox { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; display: block; background: var(--ink); border-radius: 6px }
+.vsteps { display: grid; gap: 24px; min-width: 0 }
+.step { display: grid; gap: 10px; min-width: 0 }
+.step h3 { margin: 0; font-size: 1rem; font-weight: 700; color: var(--green) }
+.step p { margin: 0 }
+.q { display: grid; gap: 4px; justify-items: start; min-width: 0 }
+.q .sent { font-family: var(--han); padding-top: 0 }
+.tip { font-size: .9rem; color: var(--muted) }
+.vline { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-items: start }
+.who { font-size: .85rem; font-weight: 600; color: var(--muted) }
+.jump { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--green); text-decoration: underline; text-underline-offset: 3px }
+.apic { width: 100% }
+.abox { width: 100%; max-width: 100%; display: block }
+.word.vid + .word.vid { margin-top: 4px }
+.word.vid { font-family: var(--body); font-size: .95rem; font-weight: 600; color: var(--blue); border: 1px dashed var(--blue); margin-top: 8px }
+.word.vid[aria-current="true"] { background: var(--green-soft); border: 1px solid var(--green); color: var(--green) }
+
+/* Ngữ pháp và bài tập */
+.ttl { display: grid; gap: 2px }
+.word.item { font-family: var(--body); font-size: .95rem; line-height: 1.35 }
+.sub { font-family: var(--han); color: var(--muted); font-size: 1.05rem }
+.fx { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center }
+.fx > span { display: grid; text-align: center; border: 1.5px solid var(--green); border-radius: 8px; padding: 6px 12px; min-width: 72px; background: var(--green-soft) }
+.fx b { font-size: .78rem; font-weight: 600; color: var(--green); letter-spacing: .02em }
+.fx i { font-style: normal; font-family: var(--han); font-size: 1.15rem }
+.fxs { display: grid; gap: 10px }
+.para { margin: 0; max-width: 65ch }
+.gx { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start }
+.gx .zh { font-family: var(--han); font-size: 1.1rem }
+.gx .pin { font-family: var(--pinyin); color: var(--green) }
+.notes { margin: 0; padding-left: 1.1em; display: grid; gap: 6px }
+.wrong { display: grid; gap: 6px }
+.wr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 12px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px }
+.wr .no { font-family: var(--han); color: var(--bad); text-decoration: line-through }
+.wr .ok { font-family: var(--han); color: var(--green) }
+.wr .why { grid-column: 1 / -1; font-size: .85rem; color: var(--muted) }
+.opts { display: flex; flex-wrap: wrap; gap: 8px }
+.opt { background: var(--sheet); border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 14px; font-family: var(--han); font-size: 1.05rem }
+.opt:hover:not(:disabled) { border-color: var(--green) }
+.opt.right { background: var(--green-soft); border-color: var(--green) }
+.opt.wrongpick { background: var(--bad-soft); border-color: var(--bad) }
+.opt:disabled { cursor: default }
+.fb { margin: 0; font-size: .92rem; min-height: 1.4em }
+.fb.good { color: var(--green) } .fb.badc { color: var(--bad) }
+.task { margin: 0; color: var(--muted) }
+.task b { font-family: var(--han); color: var(--ink); font-weight: 600; margin-right: .4em }
+.cards { display: grid; gap: 14px }
+.pcard { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 16px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; align-items: start }
+.pcard img { width: 100%; border-radius: 4px; display: block; background: #fff }
+.pbody { display: grid; gap: 8px; min-width: 0 }
+.prompt { font-family: var(--han); font-size: 1.05rem; margin: 0 }
+.pbody textarea, .desc textarea { width: 100%; min-height: 64px; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 6px; background: var(--sheet); color: var(--ink); font: 1rem/1.45 var(--han); resize: vertical }
+.pbody textarea:focus-visible, .desc textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px }
+.alist { display: grid; gap: 6px; border-left: 2px solid var(--green); padding-left: 10px }
+.fills, .orders, .mcs, .talks { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0 }
+.fillrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--han); font-size: 1.15rem }
+.slot { min-width: 2.2em; text-align: center; border-bottom: 2px solid var(--green); padding: 0 6px; color: var(--green); font-weight: 600 }
+.slot.badc { color: var(--bad); border-color: var(--bad) }
+.mini { display: flex; gap: 6px }
+.mini .opt { padding: 4px 12px }
+.subtxt { font-size: .9rem; color: var(--muted) }
+.subtxt .pin { font-family: var(--pinyin); color: var(--green) }
+.orow { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px }
+.built { min-height: 46px; display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border: 1.5px dashed var(--line); border-radius: 8px; align-items: center }
+.built.good { border-style: solid; border-color: var(--green); background: var(--green-soft) }
+.built.badc { border-style: solid; border-color: var(--bad); background: var(--bad-soft) }
+.tok { font-family: var(--han); font-size: 1.05rem; padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--green); background: var(--sheet) }
+.tok:disabled { opacity: .35; cursor: default; border-style: dashed }
+.acts { display: flex; flex-wrap: wrap; gap: 8px }
+.score { margin: 0; padding: 10px 14px; border-radius: 6px; background: var(--green-soft); font-weight: 600; font-variant-numeric: tabular-nums }
+.bank { display: flex; flex-wrap: wrap; gap: 6px }
+.bank .tok { display: grid; text-align: center; line-height: 1.2 }
+.bank .tok small { font-family: var(--body); font-size: .72rem; color: var(--muted) }
+.spotwrap { position: relative; max-width: 420px; width: 100%; justify-self: center }
+.spotwrap img { width: 100%; display: block; border-radius: 6px; background: #fff }
+.spot { position: absolute; border: 2px dashed var(--blue); border-radius: 10px; background: transparent }
+.spot:hover { background: rgba(47, 90, 147, .12) }
+.spot.right { border: 3px solid var(--green); background: rgba(20, 137, 74, .15) }
+.spot.wrongpick { border: 3px solid var(--bad); background: rgba(192, 57, 43, .12) }
+.spot span { position: absolute; left: 4px; top: 4px; background: var(--sheet); color: var(--ink); font-size: .75rem; padding: 0 6px; border-radius: 4px }
+.tcard { display: grid; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 8px }
+.head.wh { gap: 0 }
+.head.wh .hrow { display: flex; align-items: center; justify-content: center; gap: 12px }
+.head.wh .bigpy { font-family: var(--pinyin); font-size: clamp(1.6rem, 3.6vw, 2rem); font-weight: 600; color: var(--ink); line-height: 1.25 }
+.head.wh .bighan { font-family: var(--han); font-size: clamp(1.45rem, 3.2vw, 1.8rem); color: var(--ink); line-height: 1.3 }
+.head.wh h2 { font-size: clamp(1.15rem, 2.4vw, 1.4rem); margin-top: 6px }
+.sent.pin { font-size: 1.12rem }
+.body .han, .ans .han { font-size: 1.02rem }
+.zp { display: inline-grid; justify-items: inherit; line-height: 1.3 }
+.zp .p { font-family: var(--pinyin); font-size: 1.1em; color: var(--green) }
+.zp .h { font-family: var(--han); font-size: 1em }
+.head .zp { justify-items: center; font-size: 1.05rem }
+.head .zp .p { color: var(--muted) } .head .zp .h { color: var(--muted) }
+.fx i { display: grid; font-size: 1.05rem }
+.fx i .p { font-size: 1.08em }
+.gx .pin { font-size: 1.12rem; order: -1 }
+.gx .zh { font-size: 1.04rem }
+.gx .txt { display: grid; gap: 1px }
+.wr .no, .wr .ok { display: grid }
+.wr .no .p, .wr .ok .p { color: inherit; text-decoration: inherit }
+.opt { display: grid; text-align: left; gap: 1px; font-family: var(--han) }
+.opt .p { font-family: var(--pinyin); font-size: 1.06em; color: var(--green) }
+.tok { display: inline-grid; text-align: center; line-height: 1.25; border-radius: 10px !important }
+.tok .p { font-family: var(--pinyin); font-size: 1.04em; color: var(--green) }
+.fillrow { align-items: end; font-size: 1.05rem }
+.fillrow .slot { align-self: end }
+.prompt { display: grid; gap: 1px }
+.prompt .p { font-family: var(--pinyin); font-size: 1.08em; color: var(--green) }
+.task .zp { margin-right: .5em }
+.task b { display: none }
+.ph { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; border: 1.5px dashed var(--line); border-radius: 6px; display: grid; place-items: center; color: var(--muted); font-size: .9rem; text-align: center; padding: 10px; background: var(--bg) }
+.spotwrap .ph { border-style: solid }
+/* Bài khóa như trong sách */
+.kw { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none }
+.kwl { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 4px 16px; padding: 8px 10px; border-radius: 8px; border-left: 3px solid transparent; cursor: pointer }
+.kwl:hover { background: var(--green-soft) }
+.kwl.now { background: var(--orange-soft); border-left-color: var(--orange) }
+.kwl:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px }
+.kwho { display: grid; justify-items: end; text-align: right; align-content: start; padding-top: 2px }
+.kwho .p { font-family: var(--pinyin); font-size: .9rem; color: var(--muted) }
+.kwho .h { font-family: var(--han); font-weight: 600; font-size: 1.05rem }
+.kwt { display: grid; gap: 1px; min-width: 0 }
+.kwt .p { font-family: var(--pinyin); font-size: 1.16rem; color: var(--green) }
+.kwt .p mark { background: none; color: var(--green); font-weight: 700 }
+.kwt .h { font-family: var(--han); font-size: 1.08rem; letter-spacing: .02em }
+.kwt .v { font-size: .9rem; color: var(--muted) }
+.kwbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.tcard h4 { margin: 0; font-size: .9rem; color: var(--green) }
+.lines > .show, .alist + .show, .pbody > .show, .tcard > .show { justify-self: start }
+
+@media (max-width: 760px) {
+  .pcard { grid-template-columns: minmax(0, 1fr) }
+  .pcard img { max-width: 320px }
+  .wr { grid-template-columns: minmax(0, 1fr) }
+  .kwl { grid-template-columns: minmax(0, 1fr) }
+  .kwho { justify-items: start; text-align: left; display: flex; gap: 6px; align-items: baseline }
+  .vstudy { grid-template-columns: minmax(0, 1fr) }
+  .vside { position: static; justify-items: center }
+  .vbox { width: min(250px, 100%) }
+  .mgrid { grid-template-columns: minmax(0, 1fr) }
+  .abox, .apic { width: min(320px, 100%) }
+  .word.vid + .word.vid { margin-top: 0 }
+  .word.vid { margin-top: 0 }
+  .study { grid-template-columns: minmax(0, 1fr); gap: 16px }
+  .words { position: static; max-height: none; display: flex; overflow-x: auto; overflow-y: hidden; border-radius: 20px; padding: 8px }
+  .word { flex: none; white-space: nowrap }
+  .sheet { border-radius: 40px 2px 40px 2px; padding-inline: 16px }
+  .block { grid-template-columns: minmax(0, 1fr); gap: 8px }
+  .block h3 { padding-top: 0 }
+}
+@media (prefers-reduced-motion: no-preference) { .word, .topic, .show { transition: background-color .12s } }
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="ttl"><h1>Bài 7 · <span lang="zh-CN">你身体好吗</span></h1><p class="note">Khẩu ngữ cấp tốc 汉语口语速成 · Nhập môn, quyển thượng</p></div>
+    <nav class="topics" id="topics" aria-label="Chủ đề"></nav>
+  </header>
+  <p class="note" id="tts">Bấm vào một từ để xem nghĩa, nghe ví dụ và luyện dịch. Bấm 🔊 để nghe từ, câu ví dụ và bài khóa.</p>
+  <main class="study">
+    <div class="words" id="words" role="list" aria-label="Danh sách từ vựng"></div>
+    <article class="sheet" id="sheet" aria-live="polite"></article>
+  </main>
+</div>
+
+<script>
+/* Dữ liệu: mỗi chủ đề là một dòng ở sheet Chủ đề, mỗi từ là một dòng ở sheet Từ vựng.
+   Đặt phần cần tô xanh trong [ngoặc vuông]. image và audio là đường dẫn file, để "" nếu chưa có. */
+const TOPICS = [{"name":"Bài khóa 1","words":[{"id":"B07-K1-01","py":"zuìjìn","han":"最近","vi":"gần đây, dạo này","type":"danh từ","image":"media/B07-01.jpg","ex":[{"py":"[Zuìjìn] nǐ máng ma?","han":"最近你忙吗？","audio":"media/B07-K1-01_1.mp3"},{"py":"Wǒ [zuìjìn] xuéxí hěn máng.","han":"我最近学习很忙。","audio":"media/B07-K1-01_2.mp3"}],"tr":[{"vi":"[Dạo này] cô giáo có khỏe không?","py":"[Zuìjìn] lǎoshī shēntǐ hǎo ma?","han":"最近老师身体好吗？"},{"vi":"[Gần đây] anh ấy rất mệt.","py":"Tā [zuìjìn] hěn lèi.","han":"他最近很累。"}],"audio":"media/B07-K1-01.mp3"},{"id":"B07-K1-02","py":"shēntǐ","han":"身体","vi":"sức khỏe, cơ thể","type":"danh từ","image":"media/B07-02.jpg","ex":[{"py":"Bǎoluó [shēntǐ] hěn hǎo.","han":"保罗身体很好。","audio":"media/B07-K1-02_1.mp3"},{"py":"Wǒ māma [shēntǐ] bú tài hǎo.","han":"我妈妈身体不太好。","audio":"media/B07-K1-02_2.mp3"}],"tr":[{"vi":"[Sức khỏe] của tôi rất tốt.","py":"Wǒ [shēntǐ] hěn hǎo.","han":"我身体很好。"},{"vi":"Dạo này [sức khỏe] của chị gái bạn thế nào?","py":"Zuìjìn nǐ jiějie [shēntǐ] zěnmeyàng?","han":"最近你姐姐身体怎么样？"}],"audio":"media/B07-K1-02.mp3"},{"id":"B07-K1-03","py":"bǐjiào","han":"比较","vi":"khá, tương đối","type":"phó từ","image":"media/B07-03.jpg","ex":[{"py":"Wǒ xuéxí [bǐjiào] máng.","han":"我学习比较忙。","audio":"media/B07-K1-03_1.mp3"},{"py":"Zhège shítáng [bǐjiào] dà.","han":"这个食堂比较大。","audio":"media/B07-K1-03_2.mp3"}],"tr":[{"vi":"Ký túc xá của tôi [khá] nhỏ.","py":"Wǒ de sùshè [bǐjiào] xiǎo.","han":"我的宿舍比较小。"},{"vi":"Thầy giáo của chúng tôi [khá] bận.","py":"Wǒmen lǎoshī [bǐjiào] máng.","han":"我们老师比较忙。"}],"audio":"media/B07-K1-03.mp3"},{"id":"B07-K1-04","py":"chéngjì","han":"成绩","vi":"thành tích, điểm số","type":"danh từ","image":"media/B07-04.jpg","ex":[{"py":"Nǐ [chéngjì] hǎo ma?","han":"你成绩好吗？","audio":"media/B07-K1-04_1.mp3"},{"py":"Tā de [chéngjì] bú tài hǎo.","han":"他的成绩不太好。","audio":"media/B07-K1-04_2.mp3"}],"tr":[{"vi":"[Thành tích] học tập của bạn ấy rất tốt.","py":"Tā xuéxí [chéngjì] hěn hǎo.","han":"她学习成绩很好。"},{"vi":"[Điểm số] của tôi tàm tạm.","py":"Wǒ [chéngjì] mǎmahūhū.","han":"我成绩马马虎虎。"}],"audio":"media/B07-K1-04.mp3"},{"id":"B07-K1-05","py":"mǎmahūhū","han":"马马虎虎","vi":"tàm tạm, bình thường","type":"tính từ","image":"media/B07-05.jpg","ex":[{"py":"Wǒ de Hànyǔ [mǎmahūhū].","han":"我的汉语马马虎虎。","audio":"media/B07-K1-05_1.mp3"},{"py":"Zhège sùshè [mǎmahūhū].","han":"这个宿舍马马虎虎。","audio":"media/B07-K1-05_2.mp3"}],"tr":[{"vi":"Sức khỏe của bố tôi [tàm tạm].","py":"Wǒ bàba shēntǐ [mǎmahūhū].","han":"我爸爸身体马马虎虎。"},{"vi":"Thành tích của anh ấy [bình thường thôi].","py":"Tā chéngjì [mǎmahūhū].","han":"他成绩马马虎虎。"}],"audio":"media/B07-K1-05.mp3"},{"id":"B07-K1-06","py":"nǔlì","han":"努力","vi":"chăm chỉ, cố gắng","type":"tính từ","image":"media/B07-06.jpg","ex":[{"py":"Nǐmen bān tóngxué xuéxí [nǔlì] ma?","han":"你们班同学学习努力吗？","audio":"media/B07-K1-06_1.mp3"},{"py":"Tā xuéxí fēicháng [nǔlì].","han":"他学习非常努力。","audio":"media/B07-K1-06_2.mp3"}],"tr":[{"vi":"Chị gái tôi học rất [chăm chỉ].","py":"Wǒ jiějie xuéxí hěn [nǔlì].","han":"我姐姐学习很努力。"},{"vi":"Bạn học có [chăm chỉ] không?","py":"Nǐ xuéxí [nǔlì] bu [nǔlì]?","han":"你学习努力不努力？"}],"audio":"media/B07-K1-06.mp3"},{"id":"B07-K1-07","py":"fēicháng","han":"非常","vi":"rất, vô cùng","type":"phó từ","image":"media/B07-07.jpg","ex":[{"py":"Tāmen xuéxí [fēicháng] nǔlì.","han":"他们学习非常努力。","audio":"media/B07-K1-07_1.mp3"},{"py":"Shítáng li rén [fēicháng] duō.","han":"食堂里人非常多。","audio":"media/B07-K1-07_2.mp3"}],"tr":[{"vi":"Ký túc xá của chúng tôi [rất] lớn.","py":"Wǒmen de sùshè [fēicháng] dà.","han":"我们的宿舍非常大。"},{"vi":"Dạo này tôi [vô cùng] bận.","py":"Zuìjìn wǒ [fēicháng] máng.","han":"最近我非常忙。"}],"audio":"media/B07-K1-07.mp3"},{"id":"B07-K1-08","py":"tài","han":"太","vi":"quá, lắm","type":"phó từ","image":"media/B07-08.jpg","ex":[{"py":"Sùshè lí xuéxiào [tài] yuǎn le.","han":"宿舍离学校太远了。","audio":"media/B07-K1-08_1.mp3"},{"py":"Zhège jiàoshì [tài] xiǎo le.","han":"这个教室太小了。","audio":"media/B07-K1-08_2.mp3"}],"tr":[{"vi":"Dạo này tôi không bận [lắm].","py":"Zuìjìn wǒ bú [tài] máng.","han":"最近我不太忙。"},{"vi":"Nhà ăn đông người [quá]!","py":"Shítáng rén [tài] duō le!","han":"食堂人太多了！"}],"audio":"media/B07-K1-08.mp3"}],"videos":[{"kind":"audio","label":"Nghe bài khóa 1","title":"Bài khóa 1","src":"media/B07-baikhoa-1.mp3","image":"media/B07-01.jpg","lines":[{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"[Zuìjìn] nǐ [shēntǐ] hǎo ma?","han":"最近你身体好吗？","vi":"Dạo này bạn có khỏe không?","start":0.34,"end":2.54,"links":{"Zuìjìn":"B07-K1-01","shēntǐ":"B07-K1-02"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒ [shēntǐ] hěn hǎo.","han":"我身体很好。","vi":"Tôi rất khỏe.","start":2.61,"end":4.48,"links":{"shēntǐ":"B07-K1-02"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐ xuéxí máng ma?","han":"你学习忙吗？","vi":"Bạn học có bận không?","start":4.82,"end":6.73,"links":{}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒ xuéxí [bǐjiào] máng.","han":"我学习比较忙。","vi":"Tôi học khá bận.","start":6.77,"end":8.99,"links":{"bǐjiào":"B07-K1-03"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐ [chéngjì] hǎo ma?","han":"你成绩好吗？","vi":"Thành tích của bạn có tốt không?","start":9.24,"end":11.26,"links":{"chéngjì":"B07-K1-04"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"[Mǎmahūhū].","han":"马马虎虎。","vi":"Tàm tạm.","start":11.34,"end":12.79,"links":{"Mǎmahūhū":"B07-K1-05"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐmen bān tóngxué xuéxí [nǔlì] ma?","han":"你们班同学学习努力吗？","vi":"Các bạn trong lớp bạn học có chăm không?","start":13.52,"end":16.22,"links":{"nǔlì":"B07-K1-06"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Tāmen xuéxí [fēicháng] [nǔlì].","han":"他们学习非常努力。","vi":"Họ học vô cùng chăm chỉ.","start":16.22,"end":18.77,"links":{"fēicháng":"B07-K1-07","nǔlì":"B07-K1-06"}}],"questions":[{"han":"西蒙身体好吗？","py":"Xīméng shēntǐ hǎo ma?","vi":"Simon có khỏe không?","aHan":"他身体很好。","aPy":"Tā shēntǐ hěn hǎo.","aVi":"Anh ấy rất khỏe."},{"han":"西蒙学习忙吗？","py":"Xīméng xuéxí máng ma?","vi":"Simon học có bận không?","aHan":"他学习比较忙。","aPy":"Tā xuéxí bǐjiào máng.","aVi":"Anh ấy học khá bận."},{"han":"西蒙班同学学习怎么样？","py":"Xīméng bān tóngxué xuéxí zěnmeyàng?","vi":"Các bạn lớp Simon học thế nào?","aHan":"他们学习非常努力。","aPy":"Tāmen xuéxí fēicháng nǔlì.","aVi":"Họ học vô cùng chăm chỉ."}],"dl":"B07-baikhoa-1","ext":"mp3"}]},{"name":"Bài khóa 2","words":[{"id":"B07-K2-01","py":"li","han":"里","vi":"trong","type":"danh từ","image":"media/B07-07.jpg","ex":[{"py":"Shítáng [li] yǒu hěn duō xuésheng.","han":"食堂里有很多学生。","audio":"media/B07-K2-01_1.mp3"},{"py":"Jiàoshì [li] yǒu hěn duō liúxuéshēng.","han":"教室里有很多留学生。","audio":"media/B07-K2-01_2.mp3"}],"tr":[{"vi":"[Trong] lớp học có ti vi không?","py":"Jiàoshì [li] yǒu diànshì ma?","han":"教室里有电视吗？"},{"vi":"[Trong] nhà ăn có rất nhiều người.","py":"Shítáng [li] yǒu hěn duō rén.","han":"食堂里有很多人。"}],"audio":"media/B07-K2-01.mp3"},{"id":"B07-K2-02","py":"yǒu","han":"有","vi":"có","type":"động từ","image":"media/B07-09.jpg","ex":[{"py":"Sùshè li [yǒu] diànshì, yě [yǒu] kōngtiáo.","han":"宿舍里有电视，也有空调。","audio":"media/B07-K2-02_1.mp3"},{"py":"Nǐ [yǒu] jiějie ma?","han":"你有姐姐吗？","audio":"media/B07-K2-02_2.mp3"}],"tr":[{"vi":"Tôi [có] một bạn cùng phòng.","py":"Wǒ [yǒu] yí ge tóngwū.","han":"我有一个同屋。"},{"vi":"Ký túc xá [có] điều hòa [không]?","py":"Sùshè li [yǒu méiyǒu] kōngtiáo?","han":"宿舍里有没有空调？"}],"audio":"media/B07-K2-02.mp3"},{"id":"B07-K2-03","py":"méi(yǒu)","han":"没（有）","vi":"không có; chưa","type":"động từ, phó từ","image":"media/B07-05.jpg","ex":[{"py":"Zhège sùshè li [méiyǒu] diànshì.","han":"这个宿舍里没有电视。","audio":"media/B07-K2-03_1.mp3"},{"py":"Lìli [méiyǒu] gēge.","han":"莉莉没有哥哥。","audio":"media/B07-K2-03_2.mp3"}],"tr":[{"vi":"Lớp học [không có] máy điều hòa.","py":"Jiàoshì li [méiyǒu] kōngtiáo.","han":"教室里没有空调。"},{"vi":"Bạn có anh trai không? – [Không có].","py":"Nǐ yǒu gēge ma? — [Méiyǒu].","han":"你有哥哥吗？——没有。"}],"audio":"media/B07-K2-03.mp3"},{"id":"B07-K2-04","py":"kōngtiáo","han":"空调","vi":"máy điều hòa","type":"danh từ","image":"media/B07-10.jpg","ex":[{"py":"Sùshè li yǒu méiyǒu [kōngtiáo]?","han":"宿舍里有没有空调？","audio":"media/B07-K2-04_1.mp3"},{"py":"Wǒmen jiàoshì li méiyǒu [kōngtiáo].","han":"我们教室里没有空调。","audio":"media/B07-K2-04_2.mp3"}],"tr":[{"vi":"Nhà ăn có [máy điều hòa] không?","py":"Shítáng li yǒu [kōngtiáo] ma?","han":"食堂里有空调吗？"},{"vi":"[Máy điều hòa] của ký túc xá rất tốt.","py":"Sùshè de [kōngtiáo] hěn hǎo.","han":"宿舍的空调很好。"}],"audio":"media/B07-K2-04.mp3"},{"id":"B07-K2-05","py":"tóngwū","han":"同屋","vi":"bạn cùng phòng","type":"danh từ","image":"media/B07-11.jpg","ex":[{"py":"Nǐ yǒu méiyǒu [tóngwū]?","han":"你有没有同屋？","audio":"media/B07-K2-05_1.mp3"},{"py":"Bǎoluó shì wǒ de [tóngwū].","han":"保罗是我的同屋。","audio":"media/B07-K2-05_2.mp3"}],"tr":[{"vi":"[Bạn cùng phòng] của tôi học rất chăm chỉ.","py":"Wǒ [tóngwū] xuéxí hěn nǔlì.","han":"我同屋学习很努力。"},{"vi":"[Bạn cùng phòng] của bạn thế nào?","py":"Nǐ [tóngwū] zěnmeyàng?","han":"你同屋怎么样？"}],"audio":"media/B07-K2-05.mp3"},{"id":"B07-K2-06","py":"lí","han":"离","vi":"cách (khoảng cách)","type":"động từ","image":"media/B07-12.jpg","ex":[{"py":"Wǒ de sùshè [lí] jiàoshì hěn jìn.","han":"我的宿舍离教室很近。","audio":"media/B07-K2-06_1.mp3"},{"py":"Shítáng [lí] sùshè yuǎn bu yuǎn?","han":"食堂离宿舍远不远？","audio":"media/B07-K2-06_2.mp3"}],"tr":[{"vi":"Trường học [cách] ký túc xá không xa lắm.","py":"Xuéxiào [lí] sùshè bú tài yuǎn.","han":"学校离宿舍不太远。"},{"vi":"Thư viện [cách] lớp học rất gần.","py":"Túshūguǎn [lí] jiàoshì hěn jìn.","han":"图书馆离教室很近。"}],"audio":"media/B07-K2-06.mp3"},{"id":"B07-K2-07","py":"yuǎn","han":"远","vi":"xa","type":"tính từ","image":"media/B07-08.jpg","ex":[{"py":"Nǐ de sùshè lí jiàoshì [yuǎn] bu [yuǎn]?","han":"你的宿舍离教室远不远？","audio":"media/B07-K2-07_1.mp3"},{"py":"Shítáng lí túshūguǎn bú tài [yuǎn].","han":"食堂离图书馆不太远。","audio":"media/B07-K2-07_2.mp3"}],"tr":[{"vi":"Ký túc xá cách nhà ăn rất [xa].","py":"Sùshè lí shítáng hěn [yuǎn].","han":"宿舍离食堂很远。"},{"vi":"Trường học có [xa] không?","py":"Xuéxiào [yuǎn] ma?","han":"学校远吗？"}],"audio":"media/B07-K2-07.mp3"},{"id":"B07-K2-08","py":"jìn","han":"近","vi":"gần","type":"tính từ","image":"media/B07-13.jpg","ex":[{"py":"Shítáng lí sùshè hěn [jìn].","han":"食堂离宿舍很近。","audio":"media/B07-K2-08_1.mp3"},{"py":"Shítáng lí jiàoshì [jìn] bu [jìn]?","han":"食堂离教室近不近？","audio":"media/B07-K2-08_2.mp3"}],"tr":[{"vi":"Lớp học cách ký túc xá khá [gần].","py":"Jiàoshì lí sùshè bǐjiào [jìn].","han":"教室离宿舍比较近。"},{"vi":"Trường học cách đây rất [gần].","py":"Xuéxiào lí zhèr hěn [jìn].","han":"学校离这儿很近。"}],"audio":"media/B07-K2-08.mp3"}],"videos":[{"kind":"audio","label":"Nghe bài khóa 2","title":"Bài khóa 2","src":"media/B07-baikhoa-2.mp3","image":"media/B07-10.jpg","lines":[{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐ de sùshè dà bu dà?","han":"你的宿舍大不大？","vi":"Ký túc xá của bạn có lớn không?","start":0.2,"end":2.54,"links":{}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒ de sùshè bú [tài] dà.","han":"我的宿舍不太大。","vi":"Ký túc xá của tôi không lớn lắm.","start":2.74,"end":4.97,"links":{"tài":"B07-K1-08"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Sùshè [li] [yǒu] [méiyǒu] [kōngtiáo]?","han":"宿舍里有没有空调？","vi":"Trong ký túc xá có điều hòa không?","start":5.34,"end":7.99,"links":{"li":"B07-K2-01","yǒu":"B07-K2-02","méiyǒu":"B07-K2-03","kōngtiáo":"B07-K2-04"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Sùshè [li] [yǒu] [kōngtiáo].","han":"宿舍里有空调。","vi":"Trong ký túc xá có điều hòa.","start":8.0,"end":10.32,"links":{"li":"B07-K2-01","yǒu":"B07-K2-02","kōngtiáo":"B07-K2-04"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐ [yǒu] [méiyǒu] [tóngwū]?","han":"你有没有同屋？","vi":"Bạn có bạn cùng phòng không?","start":11.66,"end":13.51,"links":{"yǒu":"B07-K2-02","méiyǒu":"B07-K2-03","tóngwū":"B07-K2-05"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒ [méiyǒu] [tóngwū].","han":"我没有同屋。","vi":"Tôi không có bạn cùng phòng.","start":13.57,"end":15.54,"links":{"méiyǒu":"B07-K2-03","tóngwū":"B07-K2-05"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐ de sùshè [lí] jiàoshì [yuǎn] bu [yuǎn]?","han":"你的宿舍离教室远不远？","vi":"Ký túc xá của bạn có xa lớp học không?","start":16.03,"end":19.1,"links":{"lí":"B07-K2-06","yuǎn":"B07-K2-07"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒ de sùshè [lí] jiàoshì hěn [jìn].","han":"我的宿舍离教室很近。","vi":"Ký túc xá của tôi rất gần lớp học.","start":19.2,"end":22.27,"links":{"lí":"B07-K2-06","jìn":"B07-K2-08"}}],"questions":[{"han":"西蒙的宿舍大吗？","py":"Xīméng de sùshè dà ma?","vi":"Ký túc xá của Simon có lớn không?","aHan":"不太大。","aPy":"Bú tài dà.","aVi":"Không lớn lắm."},{"han":"西蒙有同屋吗？","py":"Xīméng yǒu tóngwū ma?","vi":"Simon có bạn cùng phòng không?","aHan":"他没有同屋。","aPy":"Tā méiyǒu tóngwū.","aVi":"Anh ấy không có bạn cùng phòng."},{"han":"西蒙的宿舍离教室远吗？","py":"Xīméng de sùshè lí jiàoshì yuǎn ma?","vi":"Ký túc xá của Simon có xa lớp học không?","aHan":"不远，很近。","aPy":"Bù yuǎn, hěn jìn.","aVi":"Không xa, rất gần."}],"dl":"B07-baikhoa-2","ext":"mp3"}]},{"name":"Bài khóa 3","words":[{"id":"B07-K3-01","py":"xuéxiào","han":"学校","vi":"trường học","type":"danh từ","image":"media/B07-14.jpg","ex":[{"py":"Nǐmen [xuéxiào] liúxuéshēng duō bu duō?","han":"你们学校留学生多不多？","audio":"media/B07-K3-01_1.mp3"},{"py":"Wǒmen [xuéxiào] hěn dà.","han":"我们学校很大。","audio":"media/B07-K3-01_2.mp3"}],"tr":[{"vi":"[Trường] của chúng tôi có rất nhiều lớp học.","py":"Wǒmen [xuéxiào] yǒu hěn duō jiàoshì.","han":"我们学校有很多教室。"},{"vi":"Ký túc xá [trường] các bạn có lớn không?","py":"Nǐmen [xuéxiào] sùshè dà bu dà?","han":"你们学校宿舍大不大？"}],"audio":"media/B07-K3-01.mp3"},{"id":"B07-K3-02","py":"duō","han":"多","vi":"nhiều","type":"tính từ","image":"media/B07-07.jpg","ex":[{"py":"Wǒmen xuéxiào liúxuéshēng tǐng [duō] de.","han":"我们学校留学生挺多的。","audio":"media/B07-K3-02_1.mp3"},{"py":"Shítáng li rén hěn [duō].","han":"食堂里人很多。","audio":"media/B07-K3-02_2.mp3"}],"tr":[{"vi":"Lớp các bạn có [nhiều] du học sinh không?","py":"Nǐmen bān liúxuéshēng [duō] bu [duō]?","han":"你们班留学生多不多？"},{"vi":"Thư viện có rất [nhiều] người.","py":"Túshūguǎn li yǒu hěn [duō] rén.","han":"图书馆里有很多人。"}],"audio":"media/B07-K3-02.mp3"},{"id":"B07-K3-03","py":"tǐng","han":"挺","vi":"khá, rất","type":"phó từ","image":"media/B07-03.jpg","ex":[{"py":"Wǒmen xuéxiào shítáng [tǐng] dà de.","han":"我们学校食堂挺大的。","audio":"media/B07-K3-03_1.mp3"},{"py":"Tā de Hànyǔ [tǐng] búcuò de.","han":"他的汉语挺不错的。","audio":"media/B07-K3-03_2.mp3"}],"tr":[{"vi":"Ký túc xá của tôi [khá] lớn.","py":"Wǒ de sùshè [tǐng] dà de.","han":"我的宿舍挺大的。"},{"vi":"Dạo này tôi [khá] bận.","py":"Zuìjìn wǒ [tǐng] máng de.","han":"最近我挺忙的。"}],"audio":"media/B07-K3-03.mp3"},{"id":"B07-K3-04","py":"zěnmeyàng","han":"怎么样","vi":"thế nào","type":"đại từ","image":"media/B07-09.jpg","ex":[{"py":"Nǐ de sùshè [zěnmeyàng]?","han":"你的宿舍怎么样？","audio":"media/B07-K3-04_1.mp3"},{"py":"Zuìjìn nǐ xuéxí [zěnmeyàng]?","han":"最近你学习怎么样？","audio":"media/B07-K3-04_2.mp3"}],"tr":[{"vi":"Sức khỏe của mẹ bạn [thế nào]?","py":"Nǐ māma shēntǐ [zěnmeyàng]?","han":"你妈妈身体怎么样？"},{"vi":"Nhà ăn trường các bạn [thế nào]?","py":"Nǐmen xuéxiào shítáng [zěnmeyàng]?","han":"你们学校食堂怎么样？"}],"audio":"media/B07-K3-04.mp3"},{"id":"B07-K3-05","py":"búcuò","han":"不错","vi":"khá tốt, không tệ","type":"tính từ","image":"media/B07-02.jpg","ex":[{"py":"Tā de chéngjì [búcuò].","han":"他的成绩不错。","audio":"media/B07-K3-05_1.mp3"},{"py":"Wǒmen xuéxiào shítáng [búcuò].","han":"我们学校食堂不错。","audio":"media/B07-K3-05_2.mp3"}],"tr":[{"vi":"Hán ngữ của bạn [khá tốt] đấy!","py":"Nǐ de Hànyǔ [búcuò]!","han":"你的汉语不错！"},{"vi":"Ký túc xá này rất [tốt].","py":"Zhège sùshè hěn [búcuò].","han":"这个宿舍很不错。"}],"audio":"media/B07-K3-05.mp3"}],"videos":[{"kind":"audio","label":"Nghe bài khóa 3","title":"Bài khóa 3","src":"media/B07-baikhoa-3.mp3","image":"media/B07-14.jpg","lines":[{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐmen [xuéxiào] liúxuéshēng [duō] bu [duō]?","han":"你们学校留学生多不多？","vi":"Trường các bạn có nhiều du học sinh không?","start":0.22,"end":3.21,"links":{"xuéxiào":"B07-K3-01","duō":"B07-K3-02"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒmen [xuéxiào] liúxuéshēng [tǐng] [duō] de.","han":"我们学校留学生挺多的。","vi":"Trường chúng tôi khá nhiều du học sinh.","start":3.57,"end":6.76,"links":{"xuéxiào":"B07-K3-01","tǐng":"B07-K3-03","duō":"B07-K3-02"}},{"who":"Bạn Trung Quốc","whoZh":"中国朋友","whoPy":"Zhōngguó péngyou","py":"Nǐmen [xuéxiào] shítáng [zěnmeyàng]?","han":"你们学校食堂怎么样？","vi":"Nhà ăn trường các bạn thế nào?","start":7.73,"end":10.5,"links":{"xuéxiào":"B07-K3-01","zěnmeyàng":"B07-K3-04"}},{"who":"Simon","whoZh":"西蒙","whoPy":"Xīméng","py":"Wǒmen [xuéxiào] shítáng [búcuò].","han":"我们学校食堂不错。","vi":"Nhà ăn trường chúng tôi khá tốt.","start":10.74,"end":13.28,"links":{"xuéxiào":"B07-K3-01","búcuò":"B07-K3-05"}}],"questions":[{"han":"他们学校留学生多吗？","py":"Tāmen xuéxiào liúxuéshēng duō ma?","vi":"Trường họ có nhiều du học sinh không?","aHan":"挺多的。","aPy":"Tǐng duō de.","aVi":"Khá nhiều."},{"han":"他们学校食堂怎么样？","py":"Tāmen xuéxiào shítáng zěnmeyàng?","vi":"Nhà ăn trường họ thế nào?","aHan":"不错。","aPy":"Búcuò.","aVi":"Khá tốt."}],"dl":"B07-baikhoa-3","ext":"mp3"}]},{"name":"Từ bổ sung","words":[{"id":"B07-BS-01","py":"tóufa","han":"头发","vi":"tóc","type":"danh từ","image":"media/B07-15.jpg","ex":[{"py":"Tā [tóufa] bù cháng.","han":"他头发不长。","audio":"media/B07-BS-01_1.mp3"},{"py":"Nǐ tóngwū [tóufa] cháng bu cháng?","han":"你同屋头发长不长？","audio":"media/B07-BS-01_2.mp3"}],"tr":[{"vi":"[Tóc] của cô giáo rất đẹp.","py":"Lǎoshī de [tóufa] hěn piàoliang.","han":"老师的头发很漂亮。"},{"vi":"[Tóc] bạn cùng phòng tôi rất dài.","py":"Wǒ tóngwū [tóufa] hěn cháng.","han":"我同屋头发很长。"}],"audio":"media/B07-BS-01.mp3"},{"id":"B07-BS-02","py":"cháng","han":"长","vi":"dài","type":"tính từ","image":"media/B07-16.jpg","ex":[{"py":"Tā tóufa fēicháng [cháng].","han":"她头发非常长。","audio":"media/B07-BS-02_1.mp3"},{"py":"Nǐ tóufa [cháng] ma?","han":"你头发长吗？","audio":"media/B07-BS-02_2.mp3"}],"tr":[{"vi":"Tóc chị gái tôi khá [dài].","py":"Wǒ jiějie tóufa tǐng [cháng] de.","han":"我姐姐头发挺长的。"},{"vi":"Tóc của Lily có [dài] không?","py":"Lìli tóufa [cháng] bu [cháng]?","han":"莉莉头发长不长？"}],"audio":"media/B07-BS-02.mp3"},{"id":"B07-BS-03","py":"yǎnjing","han":"眼睛","vi":"mắt","type":"danh từ","image":"media/B07-02.jpg","ex":[{"py":"Bǎoluó [yǎnjing] bǐjiào dà.","han":"保罗眼睛比较大。","audio":"media/B07-BS-03_1.mp3"},{"py":"Tā de [yǎnjing] fēicháng piàoliang.","han":"她的眼睛非常漂亮。","audio":"media/B07-BS-03_2.mp3"}],"tr":[{"vi":"[Mắt] con gái chị ấy rất to.","py":"Tā nǚ'ér [yǎnjing] hěn dà.","han":"她女儿眼睛很大。"},{"vi":"[Mắt] bạn cùng phòng tôi khá to.","py":"Wǒ tóngwū [yǎnjing] bǐjiào dà.","han":"我同屋眼睛比较大。"}],"audio":"media/B07-BS-03.mp3"},{"id":"B07-BS-04","py":"gèzi","han":"个子","vi":"vóc dáng, chiều cao","type":"danh từ","image":"media/B07-17.jpg","ex":[{"py":"Tā [gèzi] hěn gāo.","han":"他个子很高。","audio":"media/B07-BS-04_1.mp3"},{"py":"Wǒ [gèzi] bú tài gāo.","han":"我个子不太高。","audio":"media/B07-BS-04_2.mp3"}],"tr":[{"vi":"[Dáng] bạn cùng phòng tôi rất cao.","py":"Wǒ tóngwū [gèzi] fēicháng gāo.","han":"我同屋个子非常高。"},{"vi":"[Vóc dáng] anh trai bạn có cao không?","py":"Nǐ gēge [gèzi] gāo bu gāo?","han":"你哥哥个子高不高？"}],"audio":"media/B07-BS-04.mp3"},{"id":"B07-BS-05","py":"gāo","han":"高","vi":"cao","type":"tính từ","image":"media/B07-11.jpg","ex":[{"py":"Bǎoluó gèzi hěn [gāo].","han":"保罗个子很高。","audio":"media/B07-BS-05_1.mp3"},{"py":"Nǐ gèzi [gāo] ma?","han":"你个子高吗？","audio":"media/B07-BS-05_2.mp3"}],"tr":[{"vi":"Thầy giáo chúng tôi rất [cao].","py":"Wǒmen lǎoshī gèzi hěn [gāo].","han":"我们老师个子很高。"},{"vi":"Thành tích của anh ấy rất [cao].","py":"Tā de chéngjì hěn [gāo].","han":"他的成绩很高。"}],"audio":"media/B07-BS-05.mp3"},{"id":"B07-BS-06","py":"diànshì","han":"电视","vi":"ti vi","type":"danh từ","image":"media/B07-09.jpg","ex":[{"py":"Sùshè li yǒu [diànshì] ma?","han":"宿舍里有电视吗？","audio":"media/B07-BS-06_1.mp3"},{"py":"Wǒ de sùshè li méiyǒu [diànshì].","han":"我的宿舍里没有电视。","audio":"media/B07-BS-06_2.mp3"}],"tr":[{"vi":"Nhà ăn có [ti vi].","py":"Shítáng li yǒu [diànshì].","han":"食堂里有电视。"},{"vi":"[Ti vi] ở ký túc xá không tốt lắm.","py":"Sùshè de [diànshì] bú tài hǎo.","han":"宿舍的电视不太好。"}],"audio":"media/B07-BS-06.mp3"},{"id":"B07-BS-07","py":"Zhōngguó","han":"中国","vi":"Trung Quốc","type":"danh từ riêng","image":"media/B07-01.jpg","ex":[{"py":"Tā shì wǒ de [Zhōngguó] péngyou.","han":"他是我的中国朋友。","audio":"media/B07-BS-07_1.mp3"},{"py":"Tā de [Zhōngguó] péngyou hěn shuài.","han":"他的中国朋友很帅。","audio":"media/B07-BS-07_2.mp3"}],"tr":[{"vi":"Tôi có một người bạn [Trung Quốc].","py":"Wǒ yǒu yí ge [Zhōngguó] péngyou.","han":"我有一个中国朋友。"},{"vi":"Bạn cùng phòng tôi là người [Trung Quốc].","py":"Wǒ tóngwū shì [Zhōngguó] rén.","han":"我同屋是中国人。"}],"audio":"media/B07-BS-07.mp3"},{"id":"B07-BS-08","py":"Lìli","han":"莉莉","vi":"Lily (tên người)","type":"danh từ riêng","image":"media/B07-18.jpg","ex":[{"py":"[Lìli] shì wǒ de tóngxué.","han":"莉莉是我的同学。","audio":"media/B07-BS-08_1.mp3"},{"py":"[Lìli] méiyǒu jiějie.","han":"莉莉没有姐姐。","audio":"media/B07-BS-08_2.mp3"}],"tr":[{"vi":"[Lily] học rất chăm.","py":"[Lìli] xuéxí hěn nǔlì.","han":"莉莉学习很努力。"},{"vi":"[Lily] có bạn cùng phòng không?","py":"[Lìli] yǒu tóngwū ma?","han":"莉莉有同屋吗？"}],"audio":"media/B07-BS-08.mp3"}]},{"name":"Ngữ pháp","kind":"grammar","items":[{"id":"G1","label":"1. 主谓谓语句","zh":"主谓谓语句","title":"Câu vị ngữ chủ vị","formula":[[["Chủ ngữ","我","wǒ"],["Chủ ngữ nhỏ","身体","shēntǐ"],["(不/很) + Tính từ","很好","hěn hǎo"]]],"explain":["Vị ngữ của câu là một cụm chủ – vị. Chủ ngữ lớn thường là người hoặc nơi chốn, chủ ngữ nhỏ là một mặt của nó: sức khỏe, việc học, thành tích, tóc, mắt...","Phủ định: đặt 不 trước vị ngữ nhỏ, không đặt trước cả cụm."],"examples":[{"han":"我身体很好。","py":"Wǒ shēntǐ hěn hǎo.","vi":"Tôi rất khỏe."},{"han":"他学习不太努力。","py":"Tā xuéxí bú tài nǔlì.","vi":"Anh ấy học không chăm lắm."},{"han":"我们学校留学生挺多的。","py":"Wǒmen xuéxiào liúxuéshēng tǐng duō de.","vi":"Trường chúng tôi khá nhiều du học sinh."},{"han":"莉莉头发很长。","py":"Lìli tóufa hěn cháng.","vi":"Tóc Lily rất dài."}],"notes":["我身体很好 và 我的身体很好 nghĩa gần như nhau, nhưng câu không có 的 thông dụng hơn trong khẩu ngữ.","Tính từ làm vị ngữ thường có 很 đi kèm. 很 ở đây đọc nhẹ, nghĩa \"rất\" rất mờ. Nói 我身体好 không có 很 nghe như đang so sánh."],"wrong":[["不我身体好。","我身体不好。","不 đứng trước vị ngữ nhỏ","Bù wǒ shēntǐ hǎo.","Wǒ shēntǐ bù hǎo."],["我很身体好。","我身体很好。","很 đứng ngay trước tính từ","Wǒ hěn shēntǐ hǎo.","Wǒ shēntǐ hěn hǎo."],["我身体是很好。","我身体很好。","Không dùng 是 trước tính từ","Wǒ shēntǐ shì hěn hǎo.","Wǒ shēntǐ hěn hǎo."]],"check":[{"q":"Câu nào đúng?","opts":["我身体不太好。","我不身体太好。","我身体是不太好。"],"ans":0,"why":"不太 đứng ngay trước tính từ 好, không dùng 是.","optsPy":["Wǒ shēntǐ bú tài hǎo.","Wǒ bù shēntǐ tài hǎo.","Wǒ shēntǐ shì bú tài hǎo."]},{"q":"Nói \"Anh ấy học rất bận\" thế nào cho tự nhiên?","opts":["他学习很忙。","他的学习是很忙。","他很学习忙。"],"ans":0,"why":"Chủ ngữ lớn 他 + chủ ngữ nhỏ 学习 + 很忙.","optsPy":["Tā xuéxí hěn máng.","Tā de xuéxí shì hěn máng.","Tā hěn xuéxí máng."]}],"zhPy":"Zhǔwèi wèiyǔjù"},{"id":"G2","label":"2. Câu hỏi với 吗","zh":"疑问句（1）","title":"Câu hỏi với 吗","formula":[[["Câu trần thuật","你学习努力","nǐ xuéxí nǔlì"],["吗？","吗？","ma?"]]],"explain":["Thêm trợ từ 吗 vào cuối câu trần thuật để tạo câu hỏi có hoặc không. 吗 đọc thanh nhẹ, giọng hơi lên cuối câu.","Trả lời bằng cách lặp lại động từ hoặc tính từ chính; phủ định thì thêm 不 hoặc 没."],"examples":[{"han":"你们是留学生吗？——是，我们是留学生。","py":"Nǐmen shì liúxuéshēng ma? — Shì, wǒmen shì liúxuéshēng.","vi":"Các bạn là du học sinh à? – Vâng, chúng tôi là du học sinh."},{"han":"你学习努力吗？","py":"Nǐ xuéxí nǔlì ma?","vi":"Bạn học có chăm không?"},{"han":"她漂亮吗？","py":"Tā piàoliang ma?","vi":"Cô ấy có đẹp không?"},{"han":"最近你身体好吗？——很好。","py":"Zuìjìn nǐ shēntǐ hǎo ma? — Hěn hǎo.","vi":"Dạo này bạn khỏe không? – Rất khỏe."}],"notes":["Câu đã có từ để hỏi (怎么样, 什么, 哪儿...) hoặc đã là câu chính phản thì không thêm 吗."],"wrong":[["你们学校食堂怎么样吗？","你们学校食堂怎么样？","Đã có 怎么样 thì bỏ 吗","Nǐmen xuéxiào shítáng zěnmeyàng ma?","Nǐmen xuéxiào shítáng zěnmeyàng?"],["你忙不忙吗？","你忙不忙？ / 你忙吗？","Câu chính phản không thêm 吗","Nǐ máng bu máng ma?","Nǐ máng bu máng? / Nǐ máng ma?"]],"check":[{"q":"Hỏi \"Bạn có bạn cùng phòng không?\"","opts":["你有同屋吗？","你吗有同屋？","吗你有同屋？"],"ans":0,"why":"吗 luôn đứng cuối câu.","optsPy":["Nǐ yǒu tóngwū ma?","Nǐ ma yǒu tóngwū?","Ma nǐ yǒu tóngwū?"]},{"q":"Câu nào sai?","opts":["她漂亮吗？","你学习努力吗？","你的宿舍怎么样吗？"],"ans":2,"why":"Đã có 怎么样 thì không thêm 吗.","optsPy":["Tā piàoliang ma?","Nǐ xuéxí nǔlì ma?","Nǐ de sùshè zěnmeyàng ma?"]}],"zhPy":"Yíwènjù (1)"},{"id":"G3","label":"3. Câu hỏi chính phản","zh":"正反疑问句","title":"Câu hỏi chính phản","formula":[[["Chủ ngữ","你的宿舍","nǐ de sùshè"],["V / A","大","dà"],["不","不","bù"],["V / A","大？","dà?"]],[["Chủ ngữ","你","nǐ"],["有","有","yǒu"],["没","没","méi"],["有 + tân ngữ","有同屋？","yǒu tóngwū?"]]],"explain":["Ghép dạng khẳng định và phủ định của động từ hoặc tính từ chính trong câu. Tác dụng giống câu hỏi với 吗.","不 ở giữa đọc thanh nhẹ: dà bu dà. Từ hai âm tiết lặp cả từ: 努力不努力 (khẩu ngữ còn nói 努不努力).","Với 有, dạng chính phản là 有没有."],"examples":[{"han":"你的宿舍大不大？","py":"Nǐ de sùshè dà bu dà?","vi":"Ký túc xá của bạn có lớn không?"},{"han":"你去不去教室？","py":"Nǐ qù bu qù jiàoshì?","vi":"Bạn có đi đến lớp không?"},{"han":"他学习努力不努力？","py":"Tā xuéxí nǔlì bu nǔlì?","vi":"Anh ấy học có chăm không?"},{"han":"你们学校留学生多不多？","py":"Nǐmen xuéxiào liúxuéshēng duō bu duō?","vi":"Trường các bạn có nhiều du học sinh không?"}],"notes":["Câu chính phản không dùng 很, 非常, 比较... trước tính từ."],"wrong":[["你忙不忙吗？","你忙不忙？","Không thêm 吗","Nǐ máng bu máng ma?","Nǐ máng bu máng?"],["你很忙不忙？","你忙不忙？","Không dùng 很","Nǐ hěn máng bu máng?","Nǐ máng bu máng?"],["你有不有同屋？","你有没有同屋？","Phủ định của 有 là 没","Nǐ yǒu bu yǒu tóngwū?","Nǐ yǒu méiyǒu tóngwū?"]],"check":[{"q":"Chuyển 你的宿舍远吗？ thành câu chính phản","opts":["你的宿舍远不远？","你的宿舍不远远？","你的宿舍很远不远？"],"ans":0,"why":"Khẳng định + 不 + khẳng định, không dùng 很.","optsPy":["Nǐ de sùshè yuǎn bu yuǎn?","Nǐ de sùshè bù yuǎnyuǎn?","Nǐ de sùshè hěn yuǎn bu yuǎn?"]},{"q":"Hỏi \"Lớp bạn có nhiều du học sinh không?\"","opts":["你们班留学生多不多？","你们班留学生多不多吗？","你们班留学生不多多？"],"ans":0,"why":"Câu chính phản không thêm 吗.","optsPy":["Nǐmen bān liúxuéshēng duō bu duō?","Nǐmen bān liúxuéshēng duō bu duō ma?","Nǐmen bān liúxuéshēng bù duōduō?"]}],"zhPy":"Zhèngfǎn yíwènjù"},{"id":"G4","label":"4. Câu chữ 有","zh":"\"有\"字句","title":"Câu chữ 有","formula":[[["Người / Nơi chốn (+里)","宿舍里","sùshè li"],["有 / 没有","有","yǒu"],["Danh từ","空调","kōngtiáo"]]],"explain":["有 chỉ sở hữu (我有同屋) hoặc chỉ sự tồn tại ở một nơi (宿舍里有空调).","Phủ định là 没有, không bao giờ dùng 不有. Câu hỏi: …有…吗？ hoặc …有没有…？ Trả lời ngắn: 有。/ 没有。"],"examples":[{"han":"我们学校有很多留学生。","py":"Wǒmen xuéxiào yǒu hěn duō liúxuéshēng.","vi":"Trường chúng tôi có rất nhiều du học sinh."},{"han":"我没有同屋。","py":"Wǒ méiyǒu tóngwū.","vi":"Tôi không có bạn cùng phòng."},{"han":"宿舍里有没有空调？","py":"Sùshè li yǒu méiyǒu kōngtiáo?","vi":"Trong ký túc xá có điều hòa không?"},{"han":"莉莉有姐姐吗？——没有。","py":"Lìli yǒu jiějie ma? — Méiyǒu.","vi":"Lily có chị gái không? – Không có."}],"notes":["里 đọc nhẹ li, đặt sau danh từ chỉ nơi chốn: 宿舍里, 教室里.","Trong khẩu ngữ, 没有 + danh từ có thể nói gọn là 没: 我没同屋."],"wrong":[["我不有同屋。","我没有同屋。","Phủ định của 有 là 没","Wǒ bù yǒu tóngwū.","Wǒ méiyǒu tóngwū."],["宿舍有里空调。","宿舍里有空调。","里 đi liền sau nơi chốn","Sùshè yǒu li kōngtiáo.","Sùshè li yǒu kōngtiáo."],["宿舍里有没有空调吗？","宿舍里有没有空调？","Câu chính phản không thêm 吗","Sùshè li yǒu méiyǒu kōngtiáo ma?","Sùshè li yǒu méiyǒu kōngtiáo?"]],"check":[{"q":"\"Tôi không có ti vi\"","opts":["我不有电视。","我没有电视。","我有没电视。"],"ans":1,"why":"Dùng 没有, không dùng 不有.","optsPy":["Wǒ bù yǒu diànshì.","Wǒ méiyǒu diànshì.","Wǒ yǒu méi diànshì."]},{"q":"\"Trong lớp học có điều hòa không?\"","opts":["教室里有没有空调？","教室有里空调吗？","教室里不有空调吗？"],"ans":0,"why":"Nơi chốn + 里 + 有没有 + danh từ.","optsPy":["Jiàoshì li yǒu méiyǒu kōngtiáo?","Jiàoshì yǒu li kōngtiáo ma?","Jiàoshì li bù yǒu kōngtiáo ma?"]}],"zhPy":"\"Yǒu\" zì jù"},{"id":"N1","label":"Chú thích: 挺……的","zh":"挺……的","title":"Cấu trúc 挺……的","formula":[[["挺","挺","tǐng"],["Tính từ","多","duō"],["(的)","的","de"]]],"explain":["挺……的 hoặc 挺…… có nghĩa gần như 很……, dùng nhiều trong khẩu ngữ, sắc thái thân mật. Thường có 的 ở cuối."],"examples":[{"han":"我们学校留学生挺多的。","py":"Wǒmen xuéxiào liúxuéshēng tǐng duō de.","vi":"Trường chúng tôi khá nhiều du học sinh."},{"han":"我们学校食堂挺好的。","py":"Wǒmen xuéxiào shítáng tǐng hǎo de.","vi":"Nhà ăn trường chúng tôi khá tốt."},{"han":"他个子挺高的。","py":"Tā gèzi tǐng gāo de.","vi":"Anh ấy khá cao."}],"notes":["Muốn nói ý phủ định nhẹ \"không… lắm\", dùng 不太: 我的宿舍不太大."],"wrong":[],"check":[{"q":"Câu nào gần nghĩa nhất với 我们学校留学生很多？","opts":["我们学校留学生挺多的。","我们学校留学生太多。","我们学校留学生不太多。"],"ans":0,"why":"挺……的 ≈ 很.","optsPy":["Wǒmen xuéxiào liúxuéshēng tǐng duō de.","Wǒmen xuéxiào liúxuéshēng tài duō.","Wǒmen xuéxiào liúxuéshēng bú tài duō."]}],"zhPy":"Tǐng…… de"},{"id":"N2","label":"Chú thích: 怎么样","zh":"怎么样","title":"Cách hỏi với 怎么样","formula":[[["Người / Sự vật","你们学校食堂","nǐmen xuéxiào shítáng"],["怎么样？","怎么样？","zěnmeyàng?"]]],"explain":["怎么样 là đại từ nghi vấn, dùng để hỏi tình hình hoặc hỏi ý kiến người khác. Đặt ở cuối câu, không thêm 吗.","Trả lời bằng tính từ: 不错, 挺好的, 马马虎虎, 不太好..."],"examples":[{"han":"你们学校食堂怎么样？——我们学校食堂不错。","py":"Nǐmen xuéxiào shítáng zěnmeyàng? — Wǒmen xuéxiào shítáng búcuò.","vi":"Nhà ăn trường các bạn thế nào? – Nhà ăn trường chúng tôi khá tốt."},{"han":"最近你身体怎么样？——马马虎虎。","py":"Zuìjìn nǐ shēntǐ zěnmeyàng? — Mǎmahūhū.","vi":"Dạo này sức khỏe bạn thế nào? – Tàm tạm."},{"han":"你同屋怎么样？——他非常好。","py":"Nǐ tóngwū zěnmeyàng? — Tā fēicháng hǎo.","vi":"Bạn cùng phòng của bạn thế nào? – Cậu ấy rất tốt."}],"notes":[],"wrong":[["怎么样你的宿舍？","你的宿舍怎么样？","怎么样 đứng cuối câu","Zěnmeyàng nǐ de sùshè?","Nǐ de sùshè zěnmeyàng?"]],"check":[{"q":"\"Ký túc xá của bạn thế nào?\"","opts":["你的宿舍怎么样？","怎么样你的宿舍？","你的宿舍怎么样吗？"],"ans":0,"why":"怎么样 đứng cuối, không thêm 吗.","optsPy":["Nǐ de sùshè zěnmeyàng?","Zěnmeyàng nǐ de sùshè?","Nǐ de sùshè zěnmeyàng ma?"]}],"zhPy":"Zěnmeyàng"},{"id":"N3","label":"Phó từ chỉ mức độ","zh":"程度副词","title":"Phó từ chỉ mức độ","formula":[[["Phó từ mức độ","非常","fēicháng"],["Tính từ","努力","nǔlì"]],[["Tính từ","好","hǎo"],["极了","极了","jí le"]]],"explain":["Từ mạnh đến nhẹ: 非常 > 很 ≈ 挺……的 > 比较 > 不太.","极了 đứng sau tính từ, nghĩa là \"cực kỳ\": 好极了, 漂亮极了.","太 + tính từ + 了 nghĩa là \"quá\"; 不太 + tính từ nghĩa là \"không… lắm\"."],"examples":[{"han":"他们学习非常努力。","py":"Tāmen xuéxí fēicháng nǔlì.","vi":"Họ học vô cùng chăm chỉ."},{"han":"我学习比较忙。","py":"Wǒ xuéxí bǐjiào máng.","vi":"Tôi học khá bận."},{"han":"我的宿舍不太大。","py":"Wǒ de sùshè bú tài dà.","vi":"Ký túc xá của tôi không lớn lắm."},{"han":"我们学校食堂好极了。","py":"Wǒmen xuéxiào shítáng hǎo jí le.","vi":"Nhà ăn trường chúng tôi tuyệt lắm."}],"notes":[],"wrong":[["食堂极了好。","食堂好极了。","极了 đứng sau tính từ","Shítáng jí le hǎo.","Shítáng hǎo jí le."],["宿舍太不大。","宿舍不太大。","\"Không… lắm\" là 不太","Sùshè tài bú dà.","Sùshè bú tài dà."]],"check":[{"q":"Câu nào đúng?","opts":["食堂好极了。","食堂极了好。","食堂极好了。"],"ans":0,"why":"Tính từ + 极了.","optsPy":["Shítáng hǎo jí le.","Shítáng jí le hǎo.","Shítáng jí hǎo le."]},{"q":"\"Không lớn lắm\" nói thế nào?","opts":["不太大","太不大","不大太"],"ans":0,"why":"不太 + tính từ.","optsPy":["Bú tài dà","Tài bú dà","Bú dà tài"]}],"zhPy":"Chéngdù fùcí"}]},{"name":"Bài tập","kind":"exercise","items":[{"id":"E1","label":"1. Nhìn hình trả lời","kind":"pics","zh":"看图回答或描述","vi":"Nhìn hình trả lời hoặc miêu tả","grammar":"Câu vị ngữ chủ vị","note":"Đáp án mở. Câu gợi ý chỉ là một cách nói.","items":[{"img":"media/B07-02.jpg","alt":"Paul cầm quả bóng chuyền, sau lưng là bài kiểm tra 100 điểm","lines":["A：保罗身体怎么样？","B：________。","A：保罗成绩怎么样？","B：________。"],"hint":"","ans":[{"han":"保罗身体很好。","py":"Bǎoluó shēntǐ hěn hǎo.","vi":"Paul rất khỏe."},{"han":"保罗成绩非常好。","py":"Bǎoluó chéngjì fēicháng hǎo.","vi":"Thành tích của Paul rất tốt (100 điểm)."}],"linesPy":["A: Bǎoluó shēntǐ zěnmeyàng?","B: ____.","A: Bǎoluó chéngjì zěnmeyàng?","B: ____."]},{"img":"media/B07-18.jpg","alt":"Lily tóc dài xoăn, mắt to","lines":["莉莉________。（头发、长）","莉莉________。（眼睛、大）","莉莉________。（个子、高）"],"hint":"","ans":[{"han":"莉莉头发很长。","py":"Lìli tóufa hěn cháng.","vi":"Tóc Lily rất dài."},{"han":"莉莉眼睛很大。","py":"Lìli yǎnjing hěn dà.","vi":"Mắt Lily rất to."},{"han":"莉莉个子挺高的。","py":"Lìli gèzi tǐng gāo de.","vi":"Lily khá cao."}],"linesPy":["Lìli ____. (tóufa, cháng)","Lìli ____. (yǎnjing, dà)","Lìli ____. (gèzi, gāo)"]},{"img":"media/B07-05.jpg","alt":"Phòng ký túc xá rất nhỏ","lines":["我们的宿舍________。"],"hint":"","ans":[{"han":"我们的宿舍太小了。","py":"Wǒmen de sùshè tài xiǎo le.","vi":"Ký túc xá của chúng tôi nhỏ quá."}],"linesPy":["Wǒmen de sùshè ____."]},{"img":"media/B07-03.jpg","alt":"Nhà ăn có bàn tròn và ghế","lines":["我们的食堂________。"],"hint":"","ans":[{"han":"我们的食堂挺大的。","py":"Wǒmen de shítáng tǐng dà de.","vi":"Nhà ăn của chúng tôi khá rộng."}],"linesPy":["Wǒmen de shítáng ____."]}],"zhPy":"Kàn tú huídá huò miáoshù"},{"id":"E2","label":"2. Nhìn hình đặt hội thoại","kind":"pics","zh":"看图对话","vi":"Nhìn hình đặt hội thoại","grammar":"Câu hỏi với 吗, câu hỏi chính phản","note":"Đáp án mở. Câu gợi ý chỉ là một cách nói.","items":[{"img":"media/B07-04.jpg","alt":"Học sinh cầm bài kiểm tra, vẻ mặt bình thường","lines":["A：________？（吗）","B：________。"],"hint":"","ans":[{"han":"他成绩好吗？","py":"Tā chéngjì hǎo ma?","vi":"Thành tích của cậu ấy có tốt không?"},{"han":"他成绩马马虎虎。","py":"Tā chéngjì mǎmahūhū.","vi":"Thành tích của cậu ấy tàm tạm."}],"linesPy":["A: ____? (ma)","B: ____."]},{"img":"media/B07-17.jpg","alt":"Chàng trai rất cao đứng giữa các bạn","lines":["A：________？（吗）","B：________。"],"hint":"","ans":[{"han":"他个子高吗？","py":"Tā gèzi gāo ma?","vi":"Anh ấy có cao không?"},{"han":"他个子非常高。","py":"Tā gèzi fēicháng gāo.","vi":"Anh ấy vô cùng cao."}],"linesPy":["A: ____? (ma)","B: ____."]},{"img":"media/B07-07.jpg","alt":"Một hội trường đông người","lines":["A：________？（多，……不……）","B：________。"],"hint":"","ans":[{"han":"这儿人多不多？","py":"Zhèr rén duō bu duō?","vi":"Ở đây có đông người không?"},{"han":"这儿人非常多。","py":"Zhèr rén fēicháng duō.","vi":"Ở đây vô cùng đông người."}],"linesPy":["A: ____? (duō,…… bu……)","B: ____."]},{"img":"media/B07-12.jpg","alt":"Ký túc xá và lớp học ở cạnh nhau","lines":["A：________？（远，……不……）","B：________。"],"hint":"","ans":[{"han":"宿舍离教室远不远？","py":"Sùshè lí jiàoshì yuǎn bu yuǎn?","vi":"Ký túc xá có xa lớp học không?"},{"han":"宿舍离教室很近。","py":"Sùshè lí jiàoshì hěn jìn.","vi":"Ký túc xá rất gần lớp học."}],"linesPy":["A: ____? (yuǎn,…… bu……)","B: ____."]}],"zhPy":"Kàn tú duìhuà"},{"id":"E3","label":"3. Thay thế với 有","kind":"pics","zh":"看图进行替换练习","vi":"Nhìn hình làm bài thay thế","grammar":"Câu chữ 有","note":"Thay phần gạch chân bằng đồ vật hoặc người khác trong hình.","items":[{"img":"media/B07-09.jpg","alt":"Một phòng ký túc xá có ti vi, điều hòa, máy tính","lines":["A：宿舍里有__电视__吗？","B：有。"],"hint":"Thử thay: 空调、电脑 (diànnǎo: máy tính)","ans":[{"han":"宿舍里有空调吗？——有。","py":"Sùshè li yǒu kōngtiáo ma? — Yǒu.","vi":"Trong ký túc xá có điều hòa không? – Có."},{"han":"宿舍里有没有电脑？——有。","py":"Sùshè li yǒu méiyǒu diànnǎo? — Yǒu.","vi":"Trong ký túc xá có máy tính không? – Có."}],"linesPy":["A: Sùshè li yǒu diànshì ma?","B: Yǒu."]},{"img":"media/B07-18.jpg","alt":"Lily và bạn cùng phòng","lines":["A：莉莉有__同屋__吗？","B：有。"],"hint":"Thử thay: 中国朋友、姐姐、哥哥","ans":[{"han":"莉莉有中国朋友吗？——有。","py":"Lìli yǒu Zhōngguó péngyou ma? — Yǒu.","vi":"Lily có bạn Trung Quốc không? – Có."},{"han":"莉莉有没有姐姐？——没有。","py":"Lìli yǒu méiyǒu jiějie? — Méiyǒu.","vi":"Lily có chị gái không? – Không có."}],"linesPy":["A: Lìli yǒu tóngwū ma?","B: Yǒu."]}],"zhPy":"Kàn tú jìnxíng tìhuàn liànxí"},{"id":"E4","label":"4. Điền 不 hay 没","kind":"fill","zh":"选择“不”或“没”","vi":"Chọn 不 hay 没 để điền vào chỗ trống","grammar":"Câu chữ 有, câu vị ngữ chủ vị","items":[{"a":"我","b":"有同屋。","ans":"没","py":"Wǒ méiyǒu tóngwū.","vi":"Tôi không có bạn cùng phòng.","aPy":"Wǒ","bPy":"yǒu tóngwū."},{"a":"他学习","b":"太努力。","ans":"不","py":"Tā xuéxí bú tài nǔlì.","vi":"Anh ấy học không chăm lắm.","aPy":"Tā xuéxí","bPy":"tài nǔlì."},{"a":"宿舍里有","b":"有空调？","ans":"没","py":"Sùshè li yǒu méiyǒu kōngtiáo?","vi":"Trong ký túc xá có điều hòa không?","aPy":"Sùshè li yǒu","bPy":"yǒu kōngtiáo?"},{"a":"我们的教室","b":"大。","ans":"不","py":"Wǒmen de jiàoshì bú dà.","vi":"Lớp học của chúng tôi không lớn.","aPy":"Wǒmen de jiàoshì","bPy":"dà."},{"a":"莉莉","b":"有姐姐。","ans":"没","py":"Lìli méiyǒu jiějie.","vi":"Lily không có chị gái.","aPy":"Lìli","bPy":"yǒu jiějie."},{"a":"你的宿舍离教室远","b":"远？","ans":"不","py":"Nǐ de sùshè lí jiàoshì yuǎn bu yuǎn?","vi":"Ký túc xá của bạn có xa lớp học không?","aPy":"Nǐ de sùshè lí jiàoshì yuǎn","bPy":"yuǎn?"},{"a":"教室里","b":"有电视。","ans":"没","py":"Jiàoshì li méiyǒu diànshì.","vi":"Trong lớp học không có ti vi.","aPy":"Jiàoshì li","bPy":"yǒu diànshì."},{"a":"他身体","b":"太好。","ans":"不","py":"Tā shēntǐ bú tài hǎo.","vi":"Sức khỏe anh ấy không tốt lắm.","aPy":"Tā shēntǐ","bPy":"tài hǎo."}],"zhPy":"Xuǎnzé \"bù\" huò \"méi\""},{"id":"E5","label":"5. Sắp xếp thành câu","kind":"order","zh":"把词语排成句子","vi":"Bấm các từ theo đúng thứ tự để thành câu","grammar":"Trật tự từ của 4 điểm ngữ pháp","items":[{"t":["身体","我","好","很"],"ans":["我身体很好"],"han":"我身体很好。","py":"Wǒ shēntǐ hěn hǎo.","vi":"Tôi rất khỏe.","tPy":["shēntǐ","wǒ","hǎo","hěn"]},{"t":["大","你的","不","宿舍","大"],"ans":["你的宿舍大不大"],"han":"你的宿舍大不大？","py":"Nǐ de sùshè dà bu dà?","vi":"Ký túc xá của bạn có lớn không?","tPy":["dà","nǐ de","bù","sùshè","dà"]},{"t":["教室","我的宿舍","近","离","很"],"ans":["我的宿舍离教室很近"],"han":"我的宿舍离教室很近。","py":"Wǒ de sùshè lí jiàoshì hěn jìn.","vi":"Ký túc xá của tôi rất gần lớp học.","tPy":["jiàoshì","wǒ de sùshè","jìn","lí","hěn"]},{"t":["留学生","我们学校","的","挺","多"],"ans":["我们学校留学生挺多的"],"han":"我们学校留学生挺多的。","py":"Wǒmen xuéxiào liúxuéshēng tǐng duō de.","vi":"Trường chúng tôi khá nhiều du học sinh.","tPy":["liúxuéshēng","wǒmen xuéxiào","de","tǐng","duō"]},{"t":["空调","宿舍","没有","里","有"],"ans":["宿舍里有没有空调"],"han":"宿舍里有没有空调？","py":"Sùshè li yǒu méiyǒu kōngtiáo?","vi":"Trong ký túc xá có điều hòa không?","tPy":["kōngtiáo","sùshè","méiyǒu","li","yǒu"]},{"t":["努力","学习","他们","非常"],"ans":["他们学习非常努力"],"han":"他们学习非常努力。","py":"Tāmen xuéxí fēicháng nǔlì.","vi":"Họ học vô cùng chăm chỉ.","tPy":["nǔlì","xuéxí","tāmen","fēicháng"]}],"zhPy":"Bǎ cíyǔ páichéng jùzi"},{"id":"E6","label":"6. Chọn câu đúng","kind":"mc","zh":"选择正确的句子","vi":"Chọn câu đúng","grammar":"Lỗi thường gặp","items":[{"q":"Câu hỏi nào đúng?","opts":["你忙不忙吗？","你忙不忙？","你很忙不忙？"],"ans":1,"why":"Câu chính phản không thêm 吗, không dùng 很.","optsPy":["Nǐ máng bu máng ma?","Nǐ máng bu máng?","Nǐ hěn máng bu máng?"]},{"q":"\"Trong ký túc xá có điều hòa không?\"","opts":["宿舍里有不有空调？","宿舍里有没有空调？","宿舍里没有空调吗有？"],"ans":1,"why":"Phủ định của 有 là 没, nên dạng chính phản là 有没有.","optsPy":["Sùshè li yǒu bu yǒu kōngtiáo?","Sùshè li yǒu méiyǒu kōngtiáo?","Sùshè li méiyǒu kōngtiáo ma yǒu?"]},{"q":"\"Nhà ăn trường bạn thế nào?\"","opts":["你们学校食堂怎么样吗？","你们学校食堂怎么样？","怎么样你们学校食堂？"],"ans":1,"why":"怎么样 đứng cuối câu, không thêm 吗.","optsPy":["Nǐmen xuéxiào shítáng zěnmeyàng ma?","Nǐmen xuéxiào shítáng zěnmeyàng?","Zěnmeyàng nǐmen xuéxiào shítáng?"]},{"q":"\"Tôi không có bạn cùng phòng\"","opts":["我不有同屋。","我没有同屋。","我有没同屋。"],"ans":1,"why":"Dùng 没有.","optsPy":["Wǒ bù yǒu tóngwū.","Wǒ méiyǒu tóngwū.","Wǒ yǒu méi tóngwū."]},{"q":"\"Tôi rất khỏe\"","opts":["我很身体好。","身体我很好。","我身体很好。"],"ans":2,"why":"Chủ ngữ + chủ ngữ nhỏ + 很 + tính từ.","optsPy":["Wǒ hěn shēntǐ hǎo.","Shēntǐ wǒ hěn hǎo.","Wǒ shēntǐ hěn hǎo."]},{"q":"\"Ký túc xá không lớn lắm\"","opts":["宿舍不太大。","宿舍太不大。","宿舍不大太。"],"ans":0,"why":"不太 + tính từ.","optsPy":["Sùshè bú tài dà.","Sùshè tài bú dà.","Sùshè bú dà tài."]}],"zhPy":"Xuǎnzé zhèngquè de jùzi"},{"id":"E7","label":"7. Miêu tả người, nơi chốn","kind":"describe","zh":"选用下面的副词和形容词描述一个人或一个地方","vi":"Chọn phó từ và tính từ dưới đây để miêu tả một người hoặc một nơi","grammar":"Phó từ chỉ mức độ","banks":[[{"han":"非常","py":"fēicháng","vi":"vô cùng"},{"han":"很","py":"hěn","vi":"rất"},{"han":"挺……的","py":"tǐng…de","vi":"khá"},{"han":"比较","py":"bǐjiào","vi":"khá, tương đối"},{"han":"不太","py":"bú tài","vi":"không… lắm"},{"han":"极了","py":"jí le","vi":"cực kỳ (sau tính từ)"}],[{"han":"大","py":"dà","vi":"lớn"},{"han":"小","py":"xiǎo","vi":"nhỏ"},{"han":"远","py":"yuǎn","vi":"xa"},{"han":"近","py":"jìn","vi":"gần"},{"han":"多","py":"duō","vi":"nhiều"},{"han":"好","py":"hǎo","vi":"tốt"},{"han":"聪明","py":"cōngming","vi":"thông minh"},{"han":"漂亮","py":"piàoliang","vi":"đẹp"},{"han":"帅","py":"shuài","vi":"đẹp trai"},{"han":"高","py":"gāo","vi":"cao"},{"han":"马马虎虎","py":"mǎmahūhū","vi":"tàm tạm"},{"han":"不错","py":"búcuò","vi":"khá tốt"}]],"pics":[{"img":"media/B07-17.jpg","alt":"Nhóm bạn, mỗi người một đặc điểm","hint":["个子","高","头发","长","眼睛","大","漂亮","帅"],"ans":{"han":"他个子非常高。她头发很长，眼睛挺大的，非常漂亮。","py":"Tā gèzi fēicháng gāo. Tā tóufa hěn cháng, yǎnjing tǐng dà de, fēicháng piàoliang.","vi":"Anh ấy vô cùng cao. Cô ấy tóc rất dài, mắt khá to, vô cùng xinh."},"hintPy":["gèzi","gāo","tóufa","cháng","yǎnjing","dà","piàoliang","shuài"]},{"img":"media/B07-07.jpg","alt":"Nhà ăn rộng, đông người, ngay cạnh ký túc xá","hint":["食堂","大","人","多","离","宿舍","近"],"ans":{"han":"我们学校食堂挺大的，食堂里人非常多。食堂离宿舍很近。","py":"Wǒmen xuéxiào shítáng tǐng dà de, shítáng li rén fēicháng duō. Shítáng lí sùshè hěn jìn.","vi":"Nhà ăn trường chúng tôi khá rộng, trong nhà ăn vô cùng đông người. Nhà ăn rất gần ký túc xá."},"hintPy":["shítáng","dà","rén","duō","lí","sùshè","jìn"]},{"img":"media/B07-06.jpg","alt":"Lớp học: bạn nam giải bài trên bảng, bạn nữ chăm chỉ học","hint":["聪明","成绩","学习","努力","教室"],"ans":{"han":"他非常聪明，成绩很好。她学习挺努力的。我们的教室不太大。","py":"Tā fēicháng cōngming, chéngjì hěn hǎo. Tā xuéxí tǐng nǔlì de. Wǒmen de jiàoshì bú tài dà.","vi":"Cậu ấy vô cùng thông minh, thành tích rất tốt. Cô ấy học khá chăm chỉ. Lớp học của chúng tôi không lớn lắm."},"hintPy":["cōngming","chéngjì","xuéxí","nǔlì","jiàoshì"]}],"examples":[{"han":"我同屋非常聪明。","py":"Wǒ tóngwū fēicháng cōngming.","vi":"Bạn cùng phòng tôi vô cùng thông minh."},{"han":"我们的教室比较小。","py":"Wǒmen de jiàoshì bǐjiào xiǎo.","vi":"Lớp học của chúng tôi khá nhỏ."},{"han":"我姐姐挺漂亮的。","py":"Wǒ jiějie tǐng piàoliang de.","vi":"Chị gái tôi khá xinh."},{"han":"我的宿舍离教室不太远。","py":"Wǒ de sùshè lí jiàoshì bú tài yuǎn.","vi":"Ký túc xá của tôi không xa lớp học lắm."},{"han":"我们学校食堂好极了。","py":"Wǒmen xuéxiào shítáng hǎo jí le.","vi":"Nhà ăn trường chúng tôi tuyệt lắm."}],"zhPy":"Xuǎnyòng xiàmiàn de fùcí hé xíngróngcí miáoshù yí ge rén huò yí ge dìfang"},{"id":"E8","label":"8. Nghe, tìm, nói","kind":"listen","zh":"听一听，找一找，说一说","vi":"Nghe đoạn văn rồi tìm Paul trong hình","grammar":"","img":"media/B07-11.jpg","alt":"Ba người đàn ông đang nâng ly bên bàn ăn","question":{"han":"谁是保罗？","py":"Shéi shì Bǎoluó?","vi":"Ai là Paul?"},"spots":[{"x":3,"y":10,"w":29,"h":84,"label":"Người bên trái"},{"x":35,"y":4,"w":30,"h":92,"label":"Người ở giữa"},{"x":68,"y":10,"w":29,"h":84,"label":"Người bên phải"}],"ans":1,"why":"Paul cao, mắt khá to và rất thích uống bia. Người ở giữa cao nhất và đang cầm cốc bia lớn.","script":[{"han":"我同屋保罗是德国人。","py":"Wǒ tóngwū Bǎoluó shì Déguó rén.","vi":"Bạn cùng phòng của tôi là Paul, người Đức."},{"han":"他个子很高，眼睛比较大。","py":"Tā gèzi hěn gāo, yǎnjing bǐjiào dà.","vi":"Anh ấy rất cao, mắt khá to."},{"han":"他非常喜欢喝啤酒。","py":"Tā fēicháng xǐhuan hē píjiǔ.","vi":"Anh ấy vô cùng thích uống bia."},{"han":"我们是好朋友。","py":"Wǒmen shì hǎo péngyou.","vi":"Chúng tôi là bạn tốt."}],"newwords":[{"han":"德国","py":"Déguó","vi":"nước Đức"},{"han":"喜欢","py":"xǐhuan","vi":"thích"},{"han":"啤酒","py":"píjiǔ","vi":"bia"}],"audio":"media/B07-nghe.mp3","zhPy":"Tīng yi tīng, zhǎo yi zhǎo, shuō yi shuō"},{"id":"E9","label":"9. Luyện hội thoại","kind":"talk","zh":"会话练习","vi":"Bạn bè gặp nhau, hỏi thăm nhau về sức khỏe, việc học, cuộc sống","grammar":"","items":[{"topic":"Sức khỏe","q":{"han":"最近你身体好吗？","py":"Zuìjìn nǐ shēntǐ hǎo ma?","vi":"Dạo này bạn có khỏe không?"},"a":{"han":"很好，谢谢。你呢？","py":"Hěn hǎo, xièxie. Nǐ ne?","vi":"Rất khỏe, cảm ơn. Còn bạn?"}},{"topic":"Việc học","q":{"han":"你学习忙不忙？","py":"Nǐ xuéxí máng bu máng?","vi":"Bạn học có bận không?"},"a":{"han":"我学习比较忙。","py":"Wǒ xuéxí bǐjiào máng.","vi":"Tôi học khá bận."}},{"topic":"Thành tích","q":{"han":"你成绩怎么样？","py":"Nǐ chéngjì zěnmeyàng?","vi":"Thành tích của bạn thế nào?"},"a":{"han":"马马虎虎。","py":"Mǎmahūhū.","vi":"Tàm tạm."}},{"topic":"Ký túc xá","q":{"han":"你的宿舍里有没有空调？","py":"Nǐ de sùshè li yǒu méiyǒu kōngtiáo?","vi":"Ký túc xá của bạn có điều hòa không?"},"a":{"han":"有，我的宿舍挺不错的。","py":"Yǒu, wǒ de sùshè tǐng búcuò de.","vi":"Có, ký túc xá của tôi khá tốt."}},{"topic":"Trường học","q":{"han":"你们学校留学生多不多？","py":"Nǐmen xuéxiào liúxuéshēng duō bu duō?","vi":"Trường các bạn có nhiều du học sinh không?"},"a":{"han":"非常多。","py":"Fēicháng duō.","vi":"Rất nhiều."}}],"zhPy":"Huìhuà liànxí"}]}];
+const AUD = {"最近":"media/B07-K1-01.mp3","最近你忙吗":"media/B07-K1-01_1.mp3","我最近学习很忙":"media/B07-K1-01_2.mp3","身体":"media/B07-K1-02.mp3","保罗身体很好":"media/B07-K1-02_1.mp3","我妈妈身体不太好":"media/B07-K1-02_2.mp3","比较":"media/B07-K1-03.mp3","我学习比较忙":"media/B07-K1-03_1.mp3","这个食堂比较大":"media/B07-K1-03_2.mp3","成绩":"media/B07-K1-04.mp3","你成绩好吗":"media/B07-K1-04_1.mp3","他的成绩不太好":"media/B07-K1-04_2.mp3","马马虎虎":"media/B07-K1-05.mp3","我的汉语马马虎虎":"media/B07-K1-05_1.mp3","这个宿舍马马虎虎":"media/B07-K1-05_2.mp3","努力":"media/B07-K1-06.mp3","你们班同学学习努力吗":"media/B07-K1-06_1.mp3","他学习非常努力":"media/B07-K1-06_2.mp3","非常":"media/B07-K1-07.mp3","他们学习非常努力":"media/B07-K1-07_1.mp3","食堂里人非常多":"media/B07-K1-07_2.mp3","太":"media/B07-K1-08.mp3","宿舍离学校太远了":"media/B07-K1-08_1.mp3","这个教室太小了":"media/B07-K1-08_2.mp3","最近你身体好吗":"media/B07-bk1-01.mp3","我身体很好":"media/B07-bk1-02.mp3","你学习忙吗":"media/B07-bk1-03.mp3","里":"media/B07-K2-01.mp3","食堂里有很多学生":"media/B07-K2-01_1.mp3","教室里有很多留学生":"media/B07-K2-01_2.mp3","有":"media/B07-K2-02.mp3","宿舍里有电视也有空调":"media/B07-K2-02_1.mp3","你有姐姐吗":"media/B07-K2-02_2.mp3","没有":"media/B07-meiyou.mp3","这个宿舍里没有电视":"media/B07-K2-03_1.mp3","莉莉没有哥哥":"media/B07-K2-03_2.mp3","空调":"media/B07-K2-04.mp3","宿舍里有没有空调":"media/B07-K2-04_1.mp3","我们教室里没有空调":"media/B07-K2-04_2.mp3","同屋":"media/B07-K2-05.mp3","你有没有同屋":"media/B07-K2-05_1.mp3","保罗是我的同屋":"media/B07-K2-05_2.mp3","离":"media/B07-K2-06.mp3","我的宿舍离教室很近":"media/B07-K2-06_1.mp3","食堂离宿舍远不远":"media/B07-K2-06_2.mp3","远":"media/B07-K2-07.mp3","你的宿舍离教室远不远":"media/B07-K2-07_1.mp3","食堂离图书馆不太远":"media/B07-K2-07_2.mp3","近":"media/B07-K2-08.mp3","食堂离宿舍很近":"media/B07-K2-08_1.mp3","食堂离教室近不近":"media/B07-K2-08_2.mp3","你的宿舍大不大":"media/B07-bk2-01.mp3","我的宿舍不太大":"media/B07-bk2-02.mp3","宿舍里有空调":"media/B07-bk2-04.mp3","我没有同屋":"media/B07-bk2-06.mp3","学校":"media/B07-K3-01.mp3","你们学校留学生多不多":"media/B07-K3-01_1.mp3","我们学校很大":"media/B07-K3-01_2.mp3","多":"media/B07-K3-02.mp3","我们学校留学生挺多的":"media/B07-K3-02_1.mp3","食堂里人很多":"media/B07-K3-02_2.mp3","挺":"media/B07-K3-03.mp3","我们学校食堂挺大的":"media/B07-K3-03_1.mp3","他的汉语挺不错的":"media/B07-K3-03_2.mp3","怎么样":"media/B07-K3-04.mp3","你的宿舍怎么样":"media/B07-K3-04_1.mp3","最近你学习怎么样":"media/B07-K3-04_2.mp3","不错":"media/B07-K3-05.mp3","他的成绩不错":"media/B07-K3-05_1.mp3","我们学校食堂不错":"media/B07-K3-05_2.mp3","你们学校食堂怎么样":"media/B07-bk3-03.mp3","头发":"media/B07-BS-01.mp3","他头发不长":"media/B07-BS-01_1.mp3","你同屋头发长不长":"media/B07-BS-01_2.mp3","长":"media/B07-BS-02.mp3","她头发非常长":"media/B07-BS-02_1.mp3","你头发长吗":"media/B07-BS-02_2.mp3","眼睛":"media/B07-BS-03.mp3","保罗眼睛比较大":"media/B07-BS-03_1.mp3","她的眼睛非常漂亮":"media/B07-BS-03_2.mp3","个子":"media/B07-BS-04.mp3","他个子很高":"media/B07-BS-04_1.mp3","我个子不太高":"media/B07-BS-04_2.mp3","高":"media/B07-BS-05.mp3","保罗个子很高":"media/B07-BS-05_1.mp3","你个子高吗":"media/B07-BS-05_2.mp3","电视":"media/B07-BS-06.mp3","宿舍里有电视吗":"media/B07-BS-06_1.mp3","我的宿舍里没有电视":"media/B07-BS-06_2.mp3","中国":"media/B07-BS-07.mp3","他是我的中国朋友":"media/B07-BS-07_1.mp3","他的中国朋友很帅":"media/B07-BS-07_2.mp3","莉莉":"media/B07-BS-08.mp3","莉莉是我的同学":"media/B07-BS-08_1.mp3","莉莉没有姐姐":"media/B07-BS-08_2.mp3","我同屋保罗是德国人":"media/B07-nghe-1.mp3","他个子很高眼睛比较大":"media/B07-nghe-2.mp3","他非常喜欢喝啤酒":"media/B07-nghe-3.mp3","我们是好朋友":"media/B07-nghe-4.mp3","挺的":"media/B07-K3-03.mp3","西蒙身体好吗":"media/B07-x01.mp3","他身体很好":"media/B07-x02.mp3","西蒙学习忙吗":"media/B07-x03.mp3","他学习比较忙":"media/B07-x04.mp3","西蒙班同学学习怎么样":"media/B07-x05.mp3","西蒙的宿舍大吗":"media/B07-x06.mp3","不太大":"media/B07-x07.mp3","西蒙有同屋吗":"media/B07-x08.mp3","他没有同屋":"media/B07-x09.mp3","西蒙的宿舍离教室远吗":"media/B07-x10.mp3","不远很近":"media/B07-x11.mp3","他们学校留学生多吗":"media/B07-x12.mp3","挺多的":"media/B07-x13.mp3","他们学校食堂怎么样":"media/B07-x14.mp3","他学习不太努力":"media/B07-x15.mp3","莉莉头发很长":"media/B07-x16.mp3","你们是留学生吗":"media/B07-x17.mp3","是我们是留学生":"media/B07-x18.mp3","你学习努力吗":"media/B07-x19.mp3","她漂亮吗":"media/B07-x20.mp3","很好":"media/B07-x21.mp3","你去不去教室":"media/B07-x22.mp3","他学习努力不努力":"media/B07-x23.mp3","我们学校有很多留学生":"media/B07-x24.mp3","莉莉有姐姐吗":"media/B07-x25.mp3","我们学校食堂挺好的":"media/B07-x26.mp3","他个子挺高的":"media/B07-x27.mp3","最近你身体怎么样":"media/B07-x28.mp3","你同屋怎么样":"media/B07-x29.mp3","他非常好":"media/B07-x30.mp3","我们学校食堂好极了":"media/B07-x31.mp3","保罗成绩非常好":"media/B07-x32.mp3","莉莉眼睛很大":"media/B07-x33.mp3","莉莉个子挺高的":"media/B07-x34.mp3","我们的宿舍太小了":"media/B07-x35.mp3","我们的食堂挺大的":"media/B07-x36.mp3","他成绩好吗":"media/B07-x37.mp3","他成绩马马虎虎":"media/B07-x38.mp3","他个子高吗":"media/B07-x39.mp3","他个子非常高":"media/B07-x40.mp3","这儿人多不多":"media/B07-x41.mp3","这儿人非常多":"media/B07-x42.mp3","宿舍离教室远不远":"media/B07-x43.mp3","宿舍离教室很近":"media/B07-x44.mp3","宿舍里有空调吗":"media/B07-x45.mp3","宿舍里有没有电脑":"media/B07-x46.mp3","莉莉有中国朋友吗":"media/B07-x47.mp3","莉莉有没有姐姐":"media/B07-x48.mp3","她头发很长眼睛挺大的非常漂亮":"media/B07-x49.mp3","我们学校食堂挺大的食堂里人非常多":"media/B07-x50.mp3","他非常聪明成绩很好":"media/B07-x51.mp3","她学习挺努力的":"media/B07-x52.mp3","我们的教室不太大":"media/B07-x53.mp3","我同屋非常聪明":"media/B07-x54.mp3","我们的教室比较小":"media/B07-x55.mp3","我姐姐挺漂亮的":"media/B07-x56.mp3","我的宿舍离教室不太远":"media/B07-x57.mp3","谁是保罗":"media/B07-x58.mp3","很好谢谢":"media/B07-x59.mp3","你呢":"media/B07-x60.mp3","你学习忙不忙":"media/B07-x61.mp3","你成绩怎么样":"media/B07-x62.mp3","你的宿舍里有没有空调":"media/B07-x63.mp3","有我的宿舍挺不错的":"media/B07-x64.mp3","非常多":"media/B07-x65.mp3","我身体不太好":"media/B07-x66.mp3","他学习很忙":"media/B07-x67.mp3","你有同屋吗":"media/B07-x68.mp3","你的宿舍远不远":"media/B07-x69.mp3","你们班留学生多不多":"media/B07-x70.mp3","我没有电视":"media/B07-x71.mp3","教室里有没有空调":"media/B07-x72.mp3","食堂好极了":"media/B07-x73.mp3","我们的教室不大":"media/B07-x74.mp3","教室里没有电视":"media/B07-x75.mp3","他身体不太好":"media/B07-x76.mp3","你忙不忙":"media/B07-x77.mp3","宿舍不太大":"media/B07-x78.mp3","很":"media/B07-x79.mp3","不太":"media/B07-x80.mp3","极了":"media/B07-x81.mp3","大":"media/B07-x82.mp3","小":"media/B07-x83.mp3","好":"media/B07-x84.mp3","聪明":"media/B07-x85.mp3","漂亮":"media/B07-x86.mp3","帅":"media/B07-x87.mp3","德国":"media/B07-x88.mp3","喜欢":"media/B07-x89.mp3","啤酒":"media/B07-x90.mp3","你们是留学生吗是我们是留学生":"media/B07-xc01.mp3","最近你身体好吗很好":"media/B07-xc02.mp3","莉莉有姐姐吗没有":"media/B07-xc03.mp3","你们学校食堂怎么样我们学校食堂不错":"media/B07-xc04.mp3","最近你身体怎么样马马虎虎":"media/B07-xc05.mp3","你同屋怎么样他非常好":"media/B07-xc06.mp3","宿舍里有空调吗有":"media/B07-xc07.mp3","宿舍里有没有电脑有":"media/B07-xc08.mp3","莉莉有中国朋友吗有":"media/B07-xc09.mp3","莉莉有没有姐姐没有":"media/B07-xc10.mp3","他个子非常高她头发很长眼睛挺大的非常漂亮":"media/B07-xc11.mp3","我们学校食堂挺大的食堂里人非常多食堂离宿舍很近":"media/B07-xc12.mp3","他非常聪明成绩很好她学习挺努力的我们的教室不太大":"media/B07-xc13.mp3","很好谢谢你呢":"media/B07-xc14.mp3"};
+
+const SPEAKER = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ARROW = '<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M0 4h9V0l7 6-7 6V8H0z"/></svg>';
+
+const $ = id => document.getElementById(id);
+const make = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+/* Biến "a [b] c" thành chữ thường và thẻ mark, luôn dùng textContent để an toàn. */
+function marked(el, text) {
+  text.split(/(\[[^\]]*\])/).forEach(p => {
+    if (/^\[.*\]$/.test(p)) el.append(make("mark", "", p.slice(1, -1))); else if (p) el.append(p);
+  });
+  return el;
+}
+
+let topicIdx = 0, wordIdx = 0, player = null, view = "word", videoIdx = 0, videoStop = null;
+
+function stopAudio() { try { window.speechSynthesis?.cancel(); } catch (e) {} document.querySelectorAll(".mrow.on, .mchip.on, .mhead.on").forEach(b => b.classList.remove("on")); if (player) { player.pause(); player = null; } document.querySelectorAll(".say.on").forEach(b => b.classList.remove("on")); }
+
+function revealButton(content, showText = "Hiển thị") {
+  const b = make("button", "show", showText);
+  b.type = "button"; b.setAttribute("aria-expanded", "false");
+  content.hidden = true;
+  b.onclick = () => {
+    content.hidden = !content.hidden;
+    b.textContent = content.hidden ? showText : "Ẩn";
+    b.setAttribute("aria-expanded", String(!content.hidden));
+  };
+  return b;
+}
+
+function speaker(src, han) {
+  const b = make("button", "say");
+  b.type = "button"; b.innerHTML = SPEAKER;
+  if (!src && han) { b.setAttribute("aria-label", "Nghe"); b.onclick = () => sayZh(han, b); return b; }
+  if (!src) { b.disabled = true; b.title = "Chưa có file nghe"; b.setAttribute("aria-label", "Chưa có file nghe"); return b; }
+  b.setAttribute("aria-label", "Nghe câu ví dụ");
+  b.onclick = () => {
+    const wasOn = b.classList.contains("on");
+    stopAudio();
+    if (wasOn) return;
+    player = new Audio(src);
+    b.classList.add("on");
+    player.onended = player.onerror = () => b.classList.remove("on");
+    player.play().catch(() => b.classList.remove("on"));
+  };
+  return b;
+}
+
+function exampleLine(item, i) {
+  const li = make("li", "line");
+  const arrow = make("span", "arrow"); arrow.innerHTML = ARROW;
+  const body = make("div", "body");
+  const text = make("div");
+  text.append(marked(make("div", "sent pin"), item.py));
+  if (item.han) text.append(make("div", "han", item.han));
+  body.append(revealButton(text), text);
+  li.append(arrow, make("span", "num", (i + 1) + ","), body, speaker(item.audio, item.han));
+  return li;
+}
+
+function translateLine(item) {
+  const li = make("li", "line");
+  const body = make("div", "body");
+  const ans = make("div", "ans");
+  ans.append(marked(make("span"), item.py));
+  if (item.han) ans.append(make("span", "han", item.han));
+  body.append(marked(make("div", "sent"), item.vi), revealButton(ans, "Hiển thị đáp án"), ans);
+  li.append(make("span", "bullet", "•"), body);
+  return li;
+}
+
+function block(title, items, render, cls, emptyText) {
+  const sec = make("section", "block " + cls);
+  sec.append(make("h3", "", title));
+  if (items.length) { const ul = make("ul", "lines"); items.forEach((it, i) => ul.append(render(it, i))); sec.append(ul); }
+  else sec.append(make("p", "empty", emptyText));
+  return sec;
+}
+
+function renderSheet() {
+  stopAudio();
+  const sheet = $("sheet"), topic = TOPICS[topicIdx], list = topic.words || topic.items, word = list[wordIdx];
+  sheet.replaceChildren();
+  if (topic.kind) {
+    if (topic.kind === "grammar") renderGrammar(sheet, word); else renderExercise(sheet, word);
+    sheet.append(listNav(topic, list));
+    return;
+  }
+  if (view === "video") {
+    const item = topic.videos[videoIdx];
+    if (item.kind === "menu") renderMenu(sheet, item, topic); else if (item.kind === "audio") renderText(sheet, item, topic); else renderVideo(sheet, item, topic);
+    return;
+  }
+  if (!word) { sheet.append(make("p", "empty", "Chủ đề này chưa có từ vựng.")); return; }
+
+  const head = make("header", "head wh");
+  head.append(make("div", "bigpy", word.py));
+  if (word.han) { const hz = make("div", "bighan", word.han); hz.lang = "zh-CN"; const hr = make("div", "hrow"); const sp = speaker(word.audio, word.han); sp.setAttribute("aria-label", "Nghe từ " + word.han); hr.append(hz, sp); head.append(hr); }
+  head.append(make("h2", "", `${word.vi} (${word.type})`));
+
+  const pic = make("div", "pic");
+  if (word.image) { const img = make("img"); img.src = word.image; img.alt = word.vi; pic.classList.add("has"); pic.append(img); }
+  else pic.textContent = "Hình ảnh sẽ được thêm sau";
+
+  const nav = make("footer", "nav");
+  const prev = make("button", "", "← Từ trước"), next = make("button", "", "Từ sau →");
+  prev.type = next.type = "button";
+  const last = wordIdx === list.length - 1;
+  const nt = TOPICS[topicIdx + 1];
+  if (last) next.textContent = topic.videos ? `${topic.videos[0].label} →` : nt ? `${nt.name} →` : "Từ sau →";
+  prev.disabled = wordIdx === 0; next.disabled = last && !topic.videos && !nt;
+  prev.onclick = () => pick(wordIdx - 1); next.onclick = () => last ? (topic.videos ? showVideo(0) : goTopic(topicIdx + 1)) : pick(wordIdx + 1);
+  nav.append(prev, make("span", "", `${wordIdx + 1} / ${list.length}`), next);
+
+  sheet.append(head, pic,
+    block("Ví dụ", word.ex, exampleLine, "ex", "Từ này chưa có câu ví dụ."),
+    block("Luyện dịch", word.tr, translateLine, "tr", "Từ này chưa có câu luyện dịch."),
+    nav);
+}
+
+/* Mục video: 1 xem không phụ đề, 2 trả lời câu hỏi, 3 xem lại lời thoại */
+function linkedText(el, text, links) {
+  text.split(/(\[[^\]]*\])/).forEach(p => {
+    const inner = /^\[.*\]$/.test(p) ? p.slice(1, -1) : null;
+    if (inner === null) { if (p) el.append(p); return; }
+    const id = links[inner];
+    if (!id) { el.append(make("mark", "", inner)); return; }
+    const b = make("button", "jump", inner);
+    b.type = "button"; b.title = "Xem lại từ này";
+    b.onclick = () => pick(TOPICS[topicIdx].words.findIndex(x => x.id === id));
+    el.append(b);
+  });
+  return el;
+}
+
+/* Tải về: trong trang Claude dùng quyền tải của trình xem, bản sao mở từ máy thì tải trực tiếp */
+const LOCAL = window.STANDALONE === true;
+const dlReady = LOCAL ? Promise.resolve(true) : (window.claude?.use ? window.claude.use("downloads") : Promise.resolve(null));
+
+function scriptText(v) {
+  const clean = t => t.replace(/[\[\]]/g, "");
+  const body = v.lines.map(l => `${l.who}: ${l.han}\n${clean(l.py)}\n${l.vi}`).join("\n\n");
+  return `\ufeff${v.title}\n\n${body}\n`;
+}
+
+async function download(filename, source, note) {
+  note.textContent = "";
+  if (LOCAL) {
+    const a = document.createElement("a");
+    a.download = filename;
+    a.href = typeof source === "string" && source.startsWith("media/") ? source : URL.createObjectURL(new Blob([source], { type: "text/plain;charset=utf-8" }));
+    a.click();
+    return;
+  }
+  try {
+    const d = await dlReady;
+    let data = source;
+    if (source.startsWith("media/")) {
+      note.textContent = "Đang chuẩn bị file...";
+      const res = await fetch(source);
+      if (!res.ok) throw { code: "fetch" };
+      data = await res.blob();
+    }
+    note.textContent = "";
+    await d.save({ filename, data });
+    note.textContent = `Đã tải ${filename}.`;
+  } catch (e) {
+    note.textContent = e?.code === "declined" ? "" : e?.code === "rate_limited"
+      ? "Đang có một yêu cầu tải khác, bạn thử lại sau giây lát."
+      : "Chưa tải được file. Bạn thử lại sau.";
+  }
+}
+
+function downloadRow(v) {
+  const row = make("section", "step");
+  row.hidden = true;
+  const box = make("div", "dlrow");
+  const note = make("span", "dlnote"); note.setAttribute("aria-live", "polite");
+  const audio = make("button", "show", `Tải file nghe (.${v.ext || "mp4"})`);
+  const script = make("button", "show", "Tải lời thoại (.txt)");
+  audio.type = script.type = "button";
+  audio.onclick = () => download(`${v.dl}.${v.ext || "mp4"}`, `media/${v.dl}.${v.ext || "mp4"}`, note);
+  script.onclick = () => download(`${v.dl}-loi-thoai.txt`, scriptText(v), note);
+  box.append(audio, script, note);
+  row.append(make("h3", "", "Tải về máy"), box);
+  dlReady.then(d => { row.hidden = !d; });
+  return row;
+}
+
+function renderVideo(sheet, v, topic) {
+  const head = make("header", "head");
+  head.append(make("h2", "", v.title));
+
+  const isAudio = v.kind === "audio", tts = !v.src;
+  const video = make(isAudio ? "audio" : "video", isAudio ? "abox" : "vbox");
+  video.controls = true; video.preload = "metadata"; video.src = v.src;
+  if (!isAudio) { video.setAttribute("playsinline", ""); video.poster = v.poster; }
+  const seg = () => { if (videoStop != null && video.currentTime >= videoStop) { video.pause(); videoStop = null; } };
+  video.ontimeupdate = seg;
+  video.onseeking = () => { if (!video.dataset.seg) videoStop = null; delete video.dataset.seg; };
+  const side = make("div", "vside");
+  if (isAudio) {
+    const pic = make("div", "pic apic");
+    if (v.image) { const img = make("img"); img.src = v.image; img.alt = v.title; pic.classList.add("has"); pic.append(img); }
+    else pic.textContent = "Hình ảnh sẽ được thêm sau";
+    side.append(pic);
+  }
+  if (tts) {
+    const all = make("button", "show", "▶ Nghe cả bài");
+    all.type = "button"; all.onclick = () => sayAll(v.lines.map(l => l.han), all);
+    side.append(all, make("p", "tip", "Đang đọc bằng giọng máy, file ghi âm sẽ được thêm sau."));
+  } else side.append(video);
+
+  const s1 = make("section", "step");
+  s1.append(make("h3", "", isAudio ? "Bước 1. Nghe không xem lời thoại" : "Bước 1. Xem và nghe không phụ đề"), make("p", "tip", isAudio ? "Nghe một đến hai lần. Bạn nghe được những từ nào vừa ôn?" : "Xem video một đến hai lần. Bạn nghe được những từ nào vừa ôn?"));
+
+  const s2 = make("section", "step");
+  s2.append(make("h3", "", "Bước 2. Trả lời câu hỏi"));
+  const qs = make("ol", "lines");
+  v.questions.forEach(q => {
+    const li = make("li", "q");
+    li.append(make("div", "sent", q.han), make("div", "sent pin", q.py), make("div", "tip", q.vi));
+    const ans = make("div", "ans");
+    if (q.aHan) {
+      ans.append(make("span", "han", q.aHan), make("span", "", q.aPy), make("span", "tip", q.aVi));
+      li.append(revealButton(ans, "Hiển thị đáp án"), ans);
+    }
+    qs.append(li);
+  });
+  s2.append(qs);
+
+  const s3 = make("section", "step");
+  s3.append(make("h3", "", "Bước 3. Xem lại lời thoại"), make("p", "tip", v.lines.length ? "Bấm loa để nghe lại từng câu. Bấm từ gạch chân để xem lại từ đó." : "Lời thoại sẽ được thêm sau."));
+  const ls = make("ul", "lines");
+  v.lines.forEach(l => {
+    const li = make("li", "vline");
+    const body = make("div", "body");
+    body.append(make("div", "who", l.who));
+    if (l.py) {
+      const text = make("div");
+      text.append(linkedText(make("div", "sent pin"), l.py, l.links), make("div", "han", l.han), make("div", "tip", l.vi));
+      body.append(revealButton(text), text);
+    } else body.append(make("p", "empty", "Lời thoại câu này sẽ được thêm sau."));
+    const say = make("button", "say");
+    say.type = "button"; say.innerHTML = SPEAKER; say.setAttribute("aria-label", "Nghe lại câu này");
+    say.onclick = tts ? () => sayZh(l.han, say) : () => { video.dataset.seg = "1"; video.currentTime = l.start; videoStop = l.end; video.play().catch(() => {}); };
+    li.append(body, say);
+    ls.append(li);
+  });
+  s3.append(ls);
+
+  const steps = make("div", "vsteps"); steps.append(s1, s2, s3); if (!tts) steps.append(downloadRow(v));
+  const wrap = make("div", "vstudy"); wrap.append(side, steps);
+
+  sheet.append(head, wrap, itemNav(topic));
+}
+
+function itemNav(topic) {
+  const nav = make("footer", "nav");
+  const back = make("button", "", "← Về từ vựng");
+  back.type = "button"; back.onclick = () => pick(wordIdx);
+  nav.append(back);
+  if (videoIdx < topic.videos.length - 1) {
+    const more = make("button", "", `${topic.videos[videoIdx + 1].label} →`);
+    more.type = "button"; more.onclick = () => showVideo(videoIdx + 1);
+    nav.append(more);
+  } else if (TOPICS[topicIdx + 1]) {
+    const more = make("button", "", `${TOPICS[topicIdx + 1].name} →`);
+    more.type = "button"; more.onclick = () => goTopic(topicIdx + 1);
+    nav.append(more);
+  }
+  return nav;
+}
+
+/* Thực đơn: có file ghi âm thì phát file, chưa có thì nhờ giọng đọc tiếng Trung của thiết bị */
+function speak(item, btn, status) {
+  stopAudio();
+  status.textContent = "";
+  btn.classList.add("on");
+  const done = () => btn.classList.remove("on");
+  if (item.audio) {
+    player = new Audio(item.audio);
+    player.onended = player.onerror = done;
+    player.play().catch(done);
+    return;
+  }
+  const synth = window.speechSynthesis, voices = synth?.getVoices() || [];
+  if (!synth || (voices.length && !voices.some(v => /^zh/i.test(v.lang)))) {
+    done(); status.textContent = "Thiết bị này chưa có giọng đọc tiếng Trung."; return;
+  }
+  const u = new SpeechSynthesisUtterance(item.han);
+  u.lang = "zh-CN"; u.rate = 0.85; u.onend = u.onerror = done;
+  synth.speak(u);
+}
+
+function renderMenu(sheet, m, topic) {
+  const head = make("header", "head");
+  head.append(make("h2", "", m.title));
+  const status = make("p", "mstatus"); status.setAttribute("aria-live", "polite");
+  const hint = make("p", "mhint", "Bấm vào bất kỳ chữ nào trên thực đơn để nghe đọc.");
+  const card = make("div", "menu");
+  const title = make("button", "mhead", m.head.py);
+  title.type = "button"; title.title = m.head.vi; title.onclick = () => speak(m.head, title, status);
+  const grid = make("div", "mgrid");
+  m.groups.forEach(g => {
+    const box = make("section", "mgroup" + (g.half ? " half" : ""));
+    const chips = make("div", "mchips");
+    g.chips.forEach((c, i) => {
+      const b = make("button", "mchip" + (i ? " gold" : ""), c.py);
+      b.type = "button"; b.title = `${c.han} · ${c.vi} · ${c.en}`; b.onclick = () => speak(c, b, status);
+      chips.append(b);
+    });
+    box.append(chips);
+    g.items.forEach(it => {
+      const b = make("button", "mrow");
+      b.type = "button";
+      const name = make("span", "mname", it.py); name.append(make("span", "", it.han));
+      b.append(name, make("span", "mdots"), make("span", "mprice", `¥${it.price}`), make("span", "mvi", `${it.vi} · ${it.en}`));
+      b.onclick = () => speak(it, b, status);
+      box.append(b);
+    });
+    grid.append(box);
+  });
+  card.append(title, grid);
+  sheet.append(head, hint, card, status, itemNav(topic));
+}
+
+function showVideo(i) { view = "video"; videoIdx = i; renderWords(); renderSheet(); }
+
+function renderWords() {
+  const box = $("words"), topic = TOPICS[topicIdx];
+  box.replaceChildren(...(topic.words || topic.items).map((x, i) => {
+    const b = make("button", topic.kind ? "word item" : "word", x.label || x.py);
+    b.type = "button"; b.setAttribute("role", "listitem");
+    if (view === "word" && i === wordIdx) b.setAttribute("aria-current", "true");
+    b.onclick = () => pick(i);
+    return b;
+  }));
+  (topic.videos || []).forEach((it, i) => {
+    const b = make("button", "word vid", it.label);
+    b.type = "button"; b.setAttribute("role", "listitem");
+    if (view === "video" && i === videoIdx) b.setAttribute("aria-current", "true");
+    b.onclick = () => showVideo(i);
+    box.append(b);
+  });
+  box.querySelector('[aria-current="true"]')?.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
+
+function pick(i) { view = "word"; wordIdx = i; renderWords(); renderSheet(); }
+
+function renderTopics() {
+  $("topics").replaceChildren(...TOPICS.map((t, i) => {
+    const b = make("button", "topic", t.name);
+    b.type = "button"; b.setAttribute("aria-pressed", String(i === topicIdx));
+    b.onclick = () => goTopic(i);
+    return b;
+  }));
+}
+
+function goTopic(i) { topicIdx = i; wordIdx = 0; view = "word"; renderTopics(); renderWords(); renderSheet(); window.scrollTo({ top: 0 }); }
+
+/* Giọng máy tiếng Trung, dùng khi chưa có file ghi âm */
+function zhVoiceMissing() {
+  const s = window.speechSynthesis, v = s?.getVoices() || [];
+  return !s || (v.length && !v.some(x => /^(zh|cmn)/i.test(x.lang)));
+}
+function noVoice() { $("tts").textContent = "Thiết bị này chưa có giọng đọc tiếng Trung nên chưa phát được. File ghi âm sẽ được thêm sau."; }
+function zhKey(t) { return (t || "").replace(/[^\u4e00-\u9fff]/g, ""); }
+function sayZh(text, btn) {
+  const wasOn = btn?.classList.contains("on");
+  stopAudio();
+  if (wasOn) return;
+  if (zhVoiceMissing()) return noVoice();
+  const src = AUD[zhKey(text)];
+  if (src) {
+    btn?.classList.add("on");
+    player = new Audio(src);
+    player.onended = player.onerror = () => btn?.classList.remove("on");
+    player.play().catch(() => btn?.classList.remove("on"));
+    return;
+  }
+  btn?.classList.add("on");
+  const u = new SpeechSynthesisUtterance(text.replace(/[_＿]+/g, ""));
+  u.lang = "zh-CN"; u.rate = 0.85; u.onend = u.onerror = () => btn?.classList.remove("on");
+  speechSynthesis.speak(u);
+}
+function sayAll(list, btn) {
+  stopAudio();
+  if (zhVoiceMissing()) return noVoice();
+  btn.classList.add("on");
+  list.forEach((t, i) => {
+    const u = new SpeechSynthesisUtterance(t); u.lang = "zh-CN"; u.rate = 0.85;
+    if (i === list.length - 1) u.onend = u.onerror = () => btn.classList.remove("on");
+    speechSynthesis.speak(u);
+  });
+}
+
+function zp(han, py, cls = "zp") {
+  const s = make("span", cls); s.lang = "zh-CN";
+  if (py) { const p = make("span", "p", py); p.lang = "zh-Latn-pinyin"; s.append(p); }
+  s.append(make("span", "h", han));
+  return s;
+}
+function ph(text = "Hình sẽ được thêm sau") { return make("div", "ph", text); }
+function listNav(topic, list) {
+  const nav = make("footer", "nav");
+  const prev = make("button", "", "← Mục trước"), next = make("button", "", "Mục sau →");
+  prev.type = next.type = "button";
+  const last = wordIdx === list.length - 1, nt = TOPICS[topicIdx + 1];
+  if (last && nt) next.textContent = `${nt.name} →`;
+  prev.disabled = wordIdx === 0; next.disabled = last && !nt;
+  prev.onclick = () => pick(wordIdx - 1); next.onclick = () => last ? goTopic(topicIdx + 1) : pick(wordIdx + 1);
+  nav.append(prev, make("span", "", `${wordIdx + 1} / ${list.length}`), next);
+  return nav;
+}
+function zhLine(e, withSay = true) {
+  const row = make("div", "gx");
+  const t = make("div", "txt");
+  t.append(make("div", "zh", e.han), make("div", "pin", e.py), make("div", "tip", e.vi));
+  t.querySelector(".zh").lang = "zh-CN";
+  row.append(t);
+  if (withSay) row.append(speaker("", e.han)); else row.append(make("span"));
+  return row;
+}
+function sec(title, ...kids) {
+  const s = make("section", "block"); s.append(make("h3", "", title));
+  const body = make("div", "lines"); body.append(...kids); s.append(body); return s;
+}
+function mcItem(c) {
+  const li = make("li", "q");
+  li.append(make("div", "", c.q));
+  const opts = make("div", "opts"), fb = make("p", "fb");
+  c.opts.forEach((o, i) => {
+    const b = make("button", "opt"); b.type = "button"; b.append(zp(o, c.optsPy?.[i]));
+    b.onclick = () => {
+      if (i === c.ans) {
+        b.classList.add("right"); opts.querySelectorAll(".opt").forEach(x => x.disabled = true); if (!/sai/i.test(c.q)) b.append(speaker("", o));
+        fb.className = "fb good"; fb.textContent = "Chính xác. " + c.why;
+      } else { b.classList.add("wrongpick"); b.disabled = true; fb.className = "fb badc"; fb.textContent = "Chưa đúng, bạn thử lại."; }
+    };
+    opts.append(b);
+  });
+  li.append(opts, fb);
+  return li;
+}
+
+function renderGrammar(sheet, g) {
+  const head = make("header", "head");
+  head.append(zp(g.zh, g.zhPy), make("h2", "", g.title));
+  const fxs = make("div", "fxs");
+  g.formula.forEach(f => {
+    const row = make("div", "fx");
+    f.forEach(([lab, zh, py]) => { const s = make("span"), i = make("i"); i.append(zp(zh, py)); s.append(make("b", "", lab), i); row.append(s); });
+    fxs.append(row);
+  });
+  sheet.append(head, fxs);
+  sheet.append(sec("Giải thích", ...g.explain.map(p => make("p", "para", p))));
+  sheet.append(sec("Ví dụ", ...g.examples.map(e => zhLine(e))));
+  if (g.notes.length) { const ul = make("ul", "notes"); g.notes.forEach(n => ul.append(make("li", "", n))); sheet.append(sec("Lưu ý", ul)); }
+  if (g.wrong.length) {
+    const w = make("div", "wrong");
+    g.wrong.forEach(([no, ok, why, pno, pok]) => { const r = make("div", "wr"); r.append(zp(no, pno, "zp no"), zp(ok, pok, "zp ok"), make("span", "why", why)); w.append(r); });
+    sheet.append(sec("Sai thường gặp", w));
+  }
+  const ol = make("ol", "mcs"); g.check.forEach(c => ol.append(mcItem(c)));
+  sheet.append(sec("Kiểm tra nhanh", ol));
+}
+
+function scoreBox(total) {
+  const p = make("p", "score"); p.hidden = true;
+  let right = 0, done = 0;
+  return { el: p, mark(ok) { done++; if (ok) right++; if (done === total) { p.hidden = false; p.textContent = `Hoàn thành: ${right}/${total} câu đúng ngay lần đầu.`; } } };
+}
+
+function renderExercise(sheet, ex) {
+  const head = make("header", "head");
+  head.append(zp(ex.zh, ex.zhPy), make("h2", "", ex.label.replace(/^\d+\.\s*/, "")));
+  const task = make("p", "task"); task.append(ex.vi);
+  if (ex.grammar) task.append(make("span", "", ` · Ôn: ${ex.grammar}`));
+  sheet.append(head, task);
+  if (ex.note) sheet.append(make("p", "tip", ex.note));
+  ({ pics: exPics, fill: exFill, order: exOrder, mc: exMc, describe: exDescribe, listen: exListen, talk: exTalk })[ex.kind](sheet, ex);
+}
+function exPics(sheet, ex) {
+  const box = make("div", "cards");
+  ex.items.forEach((it, n) => {
+    const c = make("article", "pcard");
+    let img; if (it.img) { img = make("img"); img.src = it.img; img.alt = it.alt; } else img = ph(`Hình ${n + 1} sẽ được thêm sau`);
+    const b = make("div", "pbody");
+    b.append(make("h3", "", `Hình ${n + 1}`));
+    it.lines.forEach((l, k) => { const p = make("p", "prompt"); const z = zp(l.replace(/__([^_]+)__/g, "$1"), it.linesPy[k]); p.append(z); b.append(p); });
+    if (it.hint) b.append(make("p", "tip", it.hint));
+    const ta = make("textarea"); ta.id = `${ex.id}-t${n}`; ta.setAttribute("aria-label", `Câu trả lời của bạn cho hình ${n + 1}`); ta.placeholder = "Viết câu trả lời bằng chữ Hán hoặc phiên âm";
+    const ans = make("div", "alist"); it.ans.forEach(e => ans.append(zhLine(e)));
+    b.append(ta, revealButton(ans, "Xem gợi ý"), ans);
+    c.append(img, b); box.append(c);
+  });
+  sheet.append(box);
+}
+function exFill(sheet, ex) {
+  const ol = make("ol", "fills"), sc = scoreBox(ex.items.length);
+  ex.items.forEach(it => {
+    const li = make("li", "q");
+    const row = make("div", "fillrow"); row.lang = "zh-CN";
+    const slot = make("span", "slot", "＿");
+    const blank = make("span", "zp"); const bp = make("span", "p", "\u00a0"); blank.append(bp, slot);
+    row.append(zp(it.a, it.aPy), blank, zp(it.b, it.bPy));
+    const mini = make("div", "mini"), info = make("div", "subtxt"); info.hidden = true;
+    const pin = make("span", "pin", it.py); info.append(pin, " · ", it.vi, " ");
+    let first = true;
+    ["不", "没"].forEach(o => {
+      const b = make("button", "opt", o); b.type = "button";
+      b.onclick = () => {
+        if (o === it.ans) {
+          slot.textContent = o; slot.className = "slot"; bp.textContent = o === "不" ? "bù" : "méi"; b.classList.add("right");
+          mini.querySelectorAll(".opt").forEach(x => x.disabled = true); info.hidden = false; info.append(speaker("", it.a + o + it.b)); sc.mark(first);
+        } else { first = false; slot.textContent = o; slot.className = "slot badc"; b.classList.add("wrongpick"); b.disabled = true; }
+      };
+      mini.append(b);
+    });
+    row.append(mini);
+    li.append(row, info); ol.append(li);
+  });
+  sheet.append(ol, sc.el);
+}
+function shuffled(n) {
+  const a = [...Array(n).keys()];
+  for (let k = 0; k < 20; k++) { for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } if (a.some((v, i) => v !== i)) break; }
+  return a;
+}
+function exOrder(sheet, ex) {
+  const ol = make("ol", "orders"), sc = scoreBox(ex.items.length);
+  ex.items.forEach(it => {
+    const li = make("li", "orow");
+    const built = make("div", "built"), bank = make("div", "acts"), fb = make("p", "fb"), info = make("div", "subtxt");
+    info.hidden = true;
+    let picked = [], first = true, done = false;
+    const order = shuffled(it.t.length);
+    const tokBtns = order.map(i => {
+      const b = make("button", "tok"); b.type = "button"; b.append(zp(it.t[i], it.tPy[i]));
+      b.onclick = () => { if (done) return; picked.push(i); b.disabled = true; paint(); };
+      return b;
+    });
+    function paint() {
+      built.replaceChildren(...picked.map((i, k) => {
+        const b = make("button", "tok"); b.type = "button"; b.append(zp(it.t[i], it.tPy[i])); b.title = "Bấm để bỏ";
+        b.onclick = () => { if (done) return; picked.splice(k, 1); tokBtns[order.indexOf(i)].disabled = false; built.className = "built"; fb.textContent = ""; paint(); };
+        return b;
+      }));
+      if (!picked.length) built.append(make("span", "tip", "Bấm các từ bên dưới theo thứ tự"));
+    }
+    const check = make("button", "show", "Kiểm tra"); check.type = "button";
+    check.onclick = () => {
+      if (done || picked.length < it.t.length) { fb.className = "fb badc"; fb.textContent = "Bạn hãy dùng hết các từ."; return; }
+      const s = picked.map(i => it.t[i]).join("");
+      if (it.ans.includes(s)) {
+        done = true; built.className = "built good"; fb.className = "fb good"; fb.textContent = "Chính xác.";
+        info.hidden = false; info.replaceChildren(make("span", "pin", it.py), " · ", it.vi, " ", speaker("", it.han)); sc.mark(first);
+      } else { first = false; built.className = "built badc"; fb.className = "fb badc"; fb.textContent = "Chưa đúng. Bấm vào từ ở khung trên để bỏ rồi sắp lại."; }
+    };
+    bank.append(...tokBtns);
+    paint();
+    const acts = make("div", "acts"); acts.append(check);
+    li.append(built, bank, acts, fb, info); ol.append(li);
+  });
+  sheet.append(ol, sc.el);
+}
+function exMc(sheet, ex) {
+  const ol = make("ol", "mcs"); ex.items.forEach(c => ol.append(mcItem(c))); sheet.append(ol);
+}
+function exDescribe(sheet, ex) {
+  ["Phó từ", "Tính từ"].forEach((t, i) => {
+    const bank = make("div", "bank");
+    ex.banks[i].forEach(w => { const b = make("button", "tok"); b.type = "button"; b.append(zp(w.han, w.py), make("small", "", w.vi)); b.onclick = () => sayZh(w.han.replace("……", ""), b); bank.append(b); });
+    sheet.append(sec(t, bank));
+  });
+  const box = make("div", "cards");
+  ex.pics.forEach((it, n) => {
+    const c = make("article", "pcard");
+    let img; if (it.img) { img = make("img"); img.src = it.img; img.alt = it.alt; } else img = ph(`Hình ${n + 1} sẽ được thêm sau`);
+    const b = make("div", "pbody");
+    b.append(make("h3", "", `Hình ${n + 1}`));
+    const hint = make("div", "bank"); it.hint.forEach((h, k) => { const t = make("span", "tok"); t.append(zp(h, it.hintPy[k])); hint.append(t); });
+    b.append(make("p", "tip", "Gợi ý từ:"), hint);
+    const ta = make("textarea"); ta.id = `E7-p${n}`; ta.setAttribute("aria-label", `Câu miêu tả hình ${n + 1}`); ta.placeholder = "Nhìn hình, viết 2–3 câu miêu tả có phó từ chỉ mức độ";
+    const ans = make("div", "alist"); ans.append(zhLine(it.ans));
+    b.append(ta, revealButton(ans, "Xem câu mẫu"), ans);
+    c.append(img, b); box.append(c);
+  });
+  sheet.append(sec("Nhìn hình miêu tả", make("p", "tip", "Mỗi hình viết 2–3 câu, dùng phó từ và tính từ ở bảng trên. Hình 1 tả người, hình 2 tả nơi chốn, hình 3 tả việc học. Đáp án mở."), box));
+  const d = make("div", "desc"); const ta = make("textarea"); ta.id = "E7-t"; ta.setAttribute("aria-label", "Câu miêu tả của bạn"); ta.placeholder = "Ví dụ: 我同屋……";
+  const ex2 = make("div", "alist"); ex.examples.forEach(e => ex2.append(zhLine(e)));
+  d.append(ta);
+  sheet.append(sec("Miêu tả người hoặc nơi của bạn", d, revealButton(ex2, "Xem câu mẫu"), ex2));
+}
+function exListen(sheet, ex) {
+  let play;
+  if (ex.audio) { play = make("audio", "abox"); play.controls = true; play.preload = "metadata"; play.src = ex.audio; }
+  else { play = make("button", "show", "▶ Nghe đoạn văn"); play.type = "button"; play.onclick = () => sayAll(ex.script.map(e => e.han), play); }
+  const words = make("div", "bank"); ex.newwords.forEach(w => { const b = make("button", "tok"); b.type = "button"; b.append(zp(w.han, w.py), make("small", "", w.vi)); b.onclick = () => sayZh(w.han, b); words.append(b); });
+  sheet.append(sec("Bước 1. Nghe", play, make("p", "tip", "Từ mới trong bài nghe:"), words));
+  const wrap = make("div", "spotwrap");
+  if (ex.img) { const img = make("img"); img.src = ex.img; img.alt = ex.alt; wrap.append(img); } else wrap.append(ph(""));
+  const fb = make("p", "fb");
+  ex.spots.forEach((s, i) => {
+    const b = make("button", "spot"); b.type = "button"; b.setAttribute("aria-label", s.label);
+    Object.assign(b.style, { left: s.x + "%", top: s.y + "%", width: s.w + "%", height: s.h + "%" });
+    b.append(make("span", "", String(i + 1)));
+    b.onclick = () => {
+      if (i === ex.ans) { b.classList.add("right"); fb.className = "fb good"; fb.textContent = "Chính xác. " + ex.why; wrap.querySelectorAll(".spot").forEach(x => x.disabled = true); }
+      else { b.classList.add("wrongpick"); fb.className = "fb badc"; fb.textContent = "Chưa đúng. Nghe lại rồi chọn người khác."; }
+    };
+    wrap.append(b);
+  });
+  sheet.append(sec("Bước 2. Tìm", zhLine(ex.question), wrap, ...(ex.img ? [] : [make("p", "tip", "Hình ba người sẽ được thêm sau. Hiện bạn bấm vào vị trí 1, 2 hoặc 3.")]), fb));
+  const s = make("div", "alist"); ex.script.forEach(e => s.append(zhLine(e)));
+  sheet.append(sec("Bước 3. Xem lời", revealButton(s, "Hiển thị lời bài nghe"), s));
+}
+function exTalk(sheet, ex) {
+  const box = make("div", "talks");
+  ex.items.forEach(it => {
+    const c = make("article", "tcard");
+    c.append(make("h4", "", it.topic), zhLine(it.q));
+    const a = make("div", "alist"); a.append(zhLine(it.a));
+    c.append(revealButton(a, "Xem câu trả lời mẫu"), a);
+    box.append(c);
+  });
+  sheet.append(make("p", "tip", "Làm theo cặp: một bạn hỏi, một bạn trả lời, rồi đổi vai. Nói theo ý của mình trước, sau đó mới xem câu mẫu."), box);
+}
+
+/* Bài khóa trình bày như trong sách; câu đang đọc được tô sáng */
+function renderText(sheet, v, topic) {
+  const head = make("header", "head"); head.append(make("h2", "", v.title));
+  const side = make("div", "vside");
+  if (v.image) { const p = make("div", "pic apic has"); const img = make("img"); img.src = v.image; img.alt = v.title; p.append(img); side.append(p); }
+  else side.append(ph("Tranh bài khóa sẽ được thêm sau"));
+  const list = make("ol", "kw"), rows = [];
+  let media = null;
+  const mark = i => rows.forEach((r, k) => { r.classList.toggle("now", k === i); if (k === i) r.scrollIntoView({ block: "nearest" }); });
+  const bar = make("div", "kwbar");
+  const vi = make("button", "show", "Hiện nghĩa tiếng Việt"); vi.type = "button";
+  let showVi = false;
+  vi.onclick = () => { showVi = !showVi; vi.textContent = showVi ? "Ẩn nghĩa tiếng Việt" : "Hiện nghĩa tiếng Việt"; list.querySelectorAll(".v").forEach(x => x.hidden = !showVi); };
+  function playFrom(i, all) {
+    stopAudio();
+    if (media) { media.currentTime = v.lines[i].start; videoStop = all ? null : v.lines[i].end; media.play().catch(() => {}); return; }
+    if (zhVoiceMissing()) return noVoice();
+    const seq = all ? v.lines.slice(i) : [v.lines[i]];
+    seq.forEach((l, k) => {
+      const u = new SpeechSynthesisUtterance(l.han); u.lang = "zh-CN"; u.rate = 0.85;
+      u.onstart = () => mark(i + k);
+      if (k === seq.length - 1) u.onend = () => mark(-1);
+      speechSynthesis.speak(u);
+    });
+  }
+  if (v.src) {
+    media = make("audio", "abox"); media.controls = true; media.preload = "metadata"; media.src = v.src;
+    media.ontimeupdate = () => {
+      const t = media.currentTime;
+      if (videoStop != null && t >= videoStop) { media.pause(); videoStop = null; }
+      mark(v.lines.findIndex(l => t >= l.start && t < l.end));
+    };
+    media.onended = () => mark(-1);
+    side.append(media);
+  } else {
+    const all = make("button", "show", "▶ Nghe cả bài"); all.type = "button"; all.onclick = () => playFrom(0, true);
+    side.append(all, make("p", "tip", "Đang đọc bằng giọng máy, file ghi âm sẽ được thêm sau."));
+  }
+  v.lines.forEach((l, i) => {
+    const li = make("li", "kwl"); li.tabIndex = 0; li.title = "Bấm để nghe câu này";
+    const who = make("div", "kwho"); who.append(zp(l.whoZh, l.whoPy));
+    const t = make("div", "kwt");
+    const p = linkedText(make("div", "p"), l.py, l.links); p.lang = "zh-Latn-pinyin";
+    p.querySelectorAll(".jump").forEach(j => j.addEventListener("click", ev => ev.stopPropagation()));
+    const h = make("div", "h", l.han); h.lang = "zh-CN";
+    const vv = make("div", "v", l.vi); vv.hidden = true;
+    t.append(p, h, vv);
+    li.append(who, t);
+    li.onclick = () => playFrom(i, false);
+    li.onkeydown = ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFrom(i, false); } };
+    rows.push(li); list.append(li);
+  });
+  const pyb = make("button", "show", "Ẩn phiên âm"); pyb.type = "button";
+  let showPy = true;
+  pyb.onclick = () => { showPy = !showPy; pyb.textContent = showPy ? "Ẩn phiên âm" : "Hiện phiên âm"; list.querySelectorAll(".kwt > .p, .kwho .p").forEach(x => x.hidden = !showPy); };
+  bar.append(pyb, vi);
+  const s1 = make("section", "step");
+  s1.append(make("h3", "", "Bài khóa"), make("p", "tip", "Bấm vào một câu để nghe câu đó. Bấm từ gạch chân để xem lại từ."), bar, list);
+  const s2 = make("section", "step");
+  s2.append(make("h3", "", "Trả lời câu hỏi"));
+  const qs = make("ol", "lines");
+  v.questions.forEach(q => {
+    const li = make("li", "q");
+    const ql = make("div", "gx"); const qt = make("div", "txt"); qt.append(zp(q.han, q.py)); ql.append(qt, speaker("", q.han));
+    li.append(ql, make("div", "tip", q.vi));
+    const ans = make("div", "alist"); ans.append(zhLine({ han: q.aHan, py: q.aPy, vi: q.aVi }));
+    li.append(revealButton(ans, "Hiển thị đáp án"), ans);
+    qs.append(li);
+  });
+  s2.append(qs);
+  const steps = make("div", "vsteps"); steps.append(s1, s2);
+  if (v.src && v.dl) steps.append(downloadRow(v));
+  const wrap = make("div", "vstudy"); wrap.append(side, steps);
+  sheet.append(head, wrap, itemNav(topic));
+}
+
+renderTopics(); renderWords(); renderSheet();
+</script>
+
+</body>
+</html>
