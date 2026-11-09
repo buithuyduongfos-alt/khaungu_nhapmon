@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>聊 · Luyện nói</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css">
+<style>
+[hidden] { display: none !important }
+:root {
+  --desk: #dcd6cb; --paper: #f1ebdf; --paper-2: #e9e1d1; --rule: #d9cfbd; --ink: #2b2620; --muted: #6c6255;
+  --red: #9b3328; --red-soft: #f3ded8; --green: #2f7a4f; --clip: #9aa0a6; --spine: #2d2622; --ring: #c9c4bd;
+  --note: #ece4d2; --tape: rgba(222, 205, 170, .78); --line-box: #f7f2e8; --on-red: #fff8f0;
+  --hand: "Times New Roman", Times, serif; --body: "Times New Roman", Times, serif;
+  --pinyin: "Times New Roman", Times, serif; --han: "KaiTi", "楷体", "STKaiti", "Kaiti SC", "LXGW WenKai", serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --desk: #191715; --paper: #2a2621; --paper-2: #322d27; --rule: #463f36; --ink: #efe7da; --muted: #b5aa99;
+  --red: #e2826f; --red-soft: #452a24; --green: #79c99a; --clip: #8b9096; --spine: #0e0c0b; --ring: #8d8780;
+  --note: #3a342c; --tape: rgba(120, 104, 80, .7); --line-box: #2f2a24; --on-red: #1d1410 } }
+:root[data-theme="dark"] {
+  --desk: #191715; --paper: #2a2621; --paper-2: #322d27; --rule: #463f36; --ink: #efe7da; --muted: #b5aa99;
+  --red: #e2826f; --red-soft: #452a24; --green: #79c99a; --clip: #8b9096; --spine: #0e0c0b; --ring: #8d8780;
+  --note: #3a342c; --tape: rgba(120, 104, 80, .7); --line-box: #2f2a24; --on-red: #1d1410 }
+
+* { box-sizing: border-box }
+body { margin: 0; background: var(--desk); color: var(--ink); font: 16px/1.55 var(--body) }
+button { font: inherit; color: inherit; cursor: pointer }
+button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px solid var(--red); outline-offset: 2px }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 20px 16px 48px }
+.back { display: inline-block; margin-bottom: 12px; color: var(--muted); font-size: 1rem; text-decoration: none }
+.back:hover { color: var(--red) }
+
+/* Sổ còng */
+.book { position: relative; background: var(--paper); border-radius: 6px 14px 14px 6px; padding: 30px 40px 40px 104px; min-height: 80vh;
+  box-shadow: 0 18px 40px -22px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.05);
+  background-image: radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px); background-size: 6px 6px }
+.spine { position: absolute; left: 0; top: 0; bottom: 0; width: 56px; background: var(--spine); border-radius: 6px 0 0 6px;
+  box-shadow: inset -6px 0 10px rgba(0,0,0,.35) }
+.rings { position: absolute; left: 22px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-around; padding: 28px 0 }
+.ring { width: 58px; height: 26px; border: 4px solid var(--ring); border-left-color: transparent; border-radius: 0 14px 14px 0;
+  background: linear-gradient(90deg, transparent 60%, rgba(255,255,255,.18)); box-shadow: 2px 2px 3px rgba(0,0,0,.25) }
+.ring::before { content: ""; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--desk); margin: 0 0 0 40px; transform: translateY(0) }
+
+.top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; padding-bottom: 14px; border-bottom: 1px dashed var(--rule) }
+
+.dice { width: 84px; height: 84px; border-radius: 50%; border: 0; background: var(--red); color: var(--on-red);
+  display: grid; place-content: center; text-align: center; line-height: 1.05; box-shadow: 0 6px 14px -6px rgba(155,51,40,.7), inset 0 -3px 0 rgba(0,0,0,.18) }
+.dice b { font-family: var(--han); font-size: 1.9rem; font-weight: 700 }
+.dice span { font-size: .8rem; font-weight: 700; letter-spacing: .02em }
+.dice:hover { transform: rotate(-6deg) }
+.dice.spin b { animation: spin .5s ease }
+@keyframes spin { from { transform: rotate(0) } to { transform: rotate(360deg) } }
+
+.range h2 { margin: 0 0 8px; font-family: var(--hand); font-size: 1.4rem; font-weight: 700; color: var(--ink); line-height: 1.1 }
+.range p { margin: 0 0 8px; font-size: .82rem; color: var(--muted) }
+.lessons { display: flex; flex-wrap: wrap; gap: 8px }
+.lesson { border: 1.5px solid var(--rule); background: var(--line-box); border-radius: 10px; padding: 6px 12px; text-align: left; display: grid; line-height: 1.25 }
+.lesson small { font-size: .85rem; color: var(--muted) }
+.lesson b { font-size: 1.05rem }
+.lesson[aria-pressed="true"] { border-color: var(--red); background: var(--red-soft) }
+.lesson.in:not([aria-pressed="true"]) { border-style: dashed; border-color: var(--red) }
+
+.note { position: relative; background: var(--note); padding: 12px 14px 10px;
+  clip-path: polygon(0 4%, 6% 0, 14% 3%, 25% 0, 38% 4%, 52% 1%, 66% 4%, 80% 0, 92% 3%, 100% 1%, 100% 100%, 0 100%);
+  box-shadow: 0 4px 10px -6px rgba(0,0,0,.4); transform: rotate(1.5deg) }
+.clip { position: absolute; right: 18px; top: -26px; width: 20px; height: 52px; border: 3px solid var(--clip); border-radius: 10px; z-index: 2 }
+.clip::after { content: ""; position: absolute; left: 3px; top: 8px; width: 8px; height: 34px; border: 3px solid var(--clip); border-radius: 6px }
+.note h2 { margin: 0 0 8px; font-family: var(--hand); font-size: 1.35rem; line-height: 1 }
+.hbtns { display: flex; gap: 6px }
+.hbtn { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--ink); background: transparent; font-family: var(--hand); font-size: 1.25rem; font-weight: 700; line-height: 1 }
+.hbtn:hover:not(:disabled):not([aria-pressed="true"]) { background: var(--paper) }
+.hbtn[aria-pressed="true"] { background: var(--ink); color: var(--paper) }
+.hbtn:disabled { opacity: .35; cursor: not-allowed }
+.note .lg { margin: 8px 0 0; font-size: .9rem; color: var(--muted); line-height: 1.4 }
+
+.work { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, 1fr); gap: 28px; align-items: start; margin-top: 22px }
+.stage { display: grid; justify-items: center; gap: 6px; padding-top: 14px }
+.side { display: grid; gap: 14px; align-content: start; padding-top: 4px }
+.side > * { margin: 0 }
+.box.gbox { padding: 12px 14px 14px; background-image: none; border: 1px dashed var(--rule) }
+.gbox h3 { margin: 0 }
+.gbox #gram { display: grid; justify-items: start; gap: 6px; margin-top: 8px }
+.gbox .form { margin: 0 }
+.hintbox { background: var(--line-box); border-radius: 4px; padding: 12px 14px 14px; display: grid; gap: 4px; border: 1px dashed var(--rule) }
+.note { transform: rotate(.8deg) !important }
+.photo { position: relative; margin: 0; width: fit-content; max-width: 100%; background: #fff; padding: 10px 10px 12px; box-shadow: 4px 6px 14px -6px rgba(0,0,0,.45); transform: rotate(-1.2deg) }
+.photo::before { content: ""; position: absolute; top: -14px; left: 50%; width: 110px; height: 28px; margin-left: -55px; background: var(--tape); transform: rotate(2deg) }
+.frame { display: grid; place-items: center; background: var(--paper-2); min-width: 240px; min-height: 180px }
+.frame img { display: block; width: auto; height: auto; max-width: 100%; max-height: min(560px, 70vh) }
+.frame:has(img) { min-width: 0; min-height: 0; background: #fff }
+.empty { padding: 16px; text-align: center; font-family: var(--hand); font-size: 1.3rem; color: var(--muted); line-height: 1.2 }
+.count { font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums }
+
+.box { background: var(--line-box); border-radius: 4px; padding: 14px 18px 16px; margin-top: 14px;
+  background-image: repeating-linear-gradient(transparent 0 31px, var(--rule) 31px 32px); background-position: 0 10px; box-shadow: 0 1px 0 rgba(0,0,0,.04) }
+.box h3 { margin: 0 0 6px; font-family: var(--hand); font-size: 1.35rem; line-height: 1.1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px }
+.box h3 small { font-family: var(--body); font-size: .8rem; color: var(--muted); font-weight: 500 }
+.tip { margin: 0; font-size: .95rem; color: var(--muted) }
+.hint { margin-top: 6px }
+.hint:first-child { margin-top: 0 }
+.hint h4 { margin: 0 0 6px; font-size: 1rem; color: var(--red); font-weight: 700 }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { border: 1px solid var(--rule); background: var(--paper); border-radius: 10px; padding: 6px 12px; display: grid; justify-items: start; text-align: left; line-height: 1.25 }
+.chip .p { font-family: var(--pinyin); font-size: 1.05rem; color: var(--green); letter-spacing: .01em }
+.chip .h { font-family: var(--han); font-size: 1.15rem }
+.chip .v { font-size: .88rem; color: var(--muted) }
+
+.gtitle { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px }
+.form { display: inline-block; font-family: var(--body); font-size: 1.08rem; border: 1.5px dashed var(--red); border-radius: 8px; padding: 4px 10px; margin: 4px 0 8px }
+.gname { font-family: var(--body); font-size: 1.3rem; font-weight: 700 }
+.zp b { font-size: .92em }
+.zp { display: inline-grid; justify-items: center; vertical-align: bottom; line-height: 1.2; margin: 0 1px }
+.zp i { font-style: normal; font-family: var(--pinyin); font-size: .75em; font-weight: 400; color: var(--green) }
+.zp b { font-family: var(--han); font-weight: inherit }
+.form .zp i { font-size: .82em }
+.gex { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: start; padding: 6px 0 }
+.gex .p { font-family: var(--pinyin); color: var(--green) }
+.gex .h { font-family: var(--han); font-size: 1.08rem }
+.gex .v { font-size: .85rem; color: var(--muted) }
+.small { border: 1px solid var(--ink); background: transparent; border-radius: 999px; padding: 5px 14px; font-size: .9rem; font-weight: 600 }
+.small:hover { background: var(--paper) }
+.say { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--red-soft); color: var(--red); display: grid; place-items: center }
+.say.on { background: var(--red); color: var(--on-red) }
+
+textarea { width: 100%; min-height: 96px; resize: vertical; border: 0; background: transparent; font: 1.35rem/32px var(--hand); color: var(--ink); padding: 0 }
+.status { min-height: 1.3em; font-size: .85rem; color: var(--muted); margin: 6px 0 0 }
+
+@media (max-width: 680px) {
+  .book { padding: 20px 14px 26px 44px }
+  .spine { width: 26px }
+  .rings { left: 6px }
+  .ring { width: 34px; height: 14px; border-width: 3px }
+  .ring::before { margin-left: 20px; width: 7px; height: 7px }
+  .work { display: flex; flex-direction: column; align-items: stretch; gap: 14px }
+  .side { display: contents }
+  .gbox { order: -1 }
+  .stage { justify-items: center }
+  .frame img { max-height: 380px }
+  .dice { width: 70px; height: 70px }
+  .dice b { font-size: 1.6rem }
+}
+@media (prefers-reduced-motion: reduce) { .dice.spin b { animation: none } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← Khẩu ngữ cấp tốc Bài 7</a>
+  <main class="book" aria-label="Luyện nói theo hình">
+    <div class="spine" aria-hidden="true"></div>
+    <div class="rings" aria-hidden="true"><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i></div>
+
+    <div class="top">
+      <button class="dice" id="dice" type="button" aria-label="Rút một hình ngẫu nhiên"><b>聊</b><span>Rút hình</span></button>
+      <section class="range" aria-labelledby="rangeH">
+        <h2 id="rangeH">Học đến bài nào?</h2>
+        <div class="lessons" id="lessons"></div>
+      </section>
+    </div>
+
+    <div class="work">
+      <div class="stage">
+        <figure class="photo"><div class="frame" id="frame"><div class="empty">Bấm nút 聊<br>để rút một bức hình</div></div></figure>
+        <span class="count" id="count"></span>
+      </div>
+      <aside class="side" aria-labelledby="noteH">
+        <section class="box gbox" aria-labelledby="gramH">
+          <div class="gtitle"><h3 id="gramH">Điểm ngữ pháp</h3><button class="small" id="regram" type="button">Đổi cấu trúc</button></div>
+          <div id="gram"></div>
+        </section>
+        <div class="note">
+          <span class="clip" aria-hidden="true"></span>
+          <h2 id="noteH">Gợi ý</h2>
+          <div class="hbtns" id="hbtns"></div>
+          <p class="lg">1 nhân vật · 2 nơi chốn · 3 thời gian · 4 sự kiện</p>
+        </div>
+        <div class="hintbox" id="hints" aria-live="polite"><p class="tip">Rút hình trước, rồi mở từng gợi ý khi cần.</p></div>
+      </aside>
+    </div>
+
+    <p class="status" id="status" aria-live="polite"></p>
+  </main>
+</div>
+
+<script>
+const LESSONS = [{"n":7,"name":"Bạn có khỏe không?","zh":"你身体好吗"}];
+const PICS = [{"id":"bk1","img":"media/B07-01.jpg","bai":7,"alt":"Bạn Trung Quốc và Simon ngồi uống trà nói chuyện","hints":[[{"han":"西蒙","py":"Xīméng","vi":"Simon"},{"han":"中国朋友","py":"Zhōngguó péngyou","vi":"bạn Trung Quốc"},{"han":"好朋友","py":"hǎo péngyou","vi":"bạn thân"}],[{"han":"咖啡馆","py":"kāfēiguǎn","vi":"quán cà phê"},{"han":"学校里","py":"xuéxiào li","vi":"trong trường"}],[{"han":"最近","py":"zuìjìn","vi":"dạo này"},{"han":"下午","py":"xiàwǔ","vi":"buổi chiều"}],[{"han":"最近你身体好吗","py":"zuìjìn nǐ shēntǐ hǎo ma","vi":"dạo này bạn có khỏe không"},{"han":"学习比较忙","py":"xuéxí bǐjiào máng","vi":"học khá bận"},{"han":"成绩马马虎虎","py":"chéngjì mǎmahūhū","vi":"thành tích tàm tạm"},{"han":"同学学习非常努力","py":"tóngxué xuéxí fēicháng nǔlì","vi":"các bạn học rất chăm"}]]},{"id":"paul","img":"media/B07-02.jpg","bai":7,"alt":"Paul ôm quả bóng chuyền, sau lưng là bài kiểm tra điểm tốt","hints":[[{"han":"保罗","py":"Bǎoluó","vi":"Paul"},{"han":"留学生","py":"liúxuéshēng","vi":"du học sinh"}],[{"han":"学校","py":"xuéxiào","vi":"trường học"},{"han":"体育馆","py":"tǐyùguǎn","vi":"nhà thi đấu"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"},{"han":"最近","py":"zuìjìn","vi":"dạo này"}],[{"han":"身体很好","py":"shēntǐ hěn hǎo","vi":"rất khỏe"},{"han":"成绩非常好","py":"chéngjì fēicháng hǎo","vi":"thành tích rất tốt"},{"han":"眼睛比较大","py":"yǎnjing bǐjiào dà","vi":"mắt khá to"},{"han":"很高兴","py":"hěn gāoxìng","vi":"rất vui"}]]},{"id":"stang","img":"media/B07-03.jpg","bai":7,"alt":"Nhà ăn rộng rãi, sạch sẽ, chưa có người","hints":[[{"han":"没有人","py":"méiyǒu rén","vi":"không có ai"},{"han":"同学们","py":"tóngxuémen","vi":"các bạn học"}],[{"han":"学校食堂","py":"xuéxiào shítáng","vi":"nhà ăn của trường"}],[{"han":"早上","py":"zǎoshang","vi":"buổi sáng"},{"han":"现在","py":"xiànzài","vi":"bây giờ"}],[{"han":"食堂大极了","py":"shítáng dà jí le","vi":"nhà ăn cực rộng"},{"han":"挺不错的","py":"tǐng búcuò de","vi":"khá tốt"},{"han":"桌子很多","py":"zhuōzi hěn duō","vi":"có rất nhiều bàn"}]]},{"id":"diem","img":"media/B07-04.jpg","bai":7,"alt":"Một bạn cầm bài kiểm tra nửa đúng nửa sai, nhún vai","hints":[[{"han":"学生","py":"xuésheng","vi":"học sinh, sinh viên"},{"han":"我同屋","py":"wǒ tóngwū","vi":"bạn cùng phòng của tôi"}],[{"han":"教室","py":"jiàoshì","vi":"lớp học"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"}],[{"han":"成绩马马虎虎","py":"chéngjì mǎmahūhū","vi":"thành tích tàm tạm"},{"han":"成绩不太好","py":"chéngjì bú tài hǎo","vi":"thành tích không tốt lắm"},{"han":"学习不太努力","py":"xuéxí bú tài nǔlì","vi":"học không chăm lắm"}]]},{"id":"phongnho","img":"media/B07-05.jpg","bai":7,"alt":"Phòng ký túc xá rất nhỏ, một bạn dang tay gần chạm hai bức tường","hints":[[{"han":"留学生","py":"liúxuéshēng","vi":"du học sinh"},{"han":"我","py":"wǒ","vi":"tôi"}],[{"han":"宿舍","py":"sùshè","vi":"ký túc xá"},{"han":"宿舍里","py":"sùshè li","vi":"trong ký túc xá"}],[{"han":"现在","py":"xiànzài","vi":"bây giờ"}],[{"han":"宿舍太小了","py":"sùshè tài xiǎo le","vi":"ký túc xá nhỏ quá"},{"han":"不太大","py":"bú tài dà","vi":"không lớn lắm"},{"han":"没有电视","py":"méiyǒu diànshì","vi":"không có ti vi"},{"han":"没有空调","py":"méiyǒu kōngtiáo","vi":"không có điều hòa"}]]},{"id":"thongminh","img":"media/B07-06.jpg","bai":7,"alt":"Lớp học: bạn nam giải bài trên bảng, thầy giơ ngón cái, bạn nữ chăm chỉ làm bài","hints":[[{"han":"老师","py":"lǎoshī","vi":"thầy cô"},{"han":"男同学","py":"nán tóngxué","vi":"bạn nam"},{"han":"女同学","py":"nǚ tóngxué","vi":"bạn nữ"}],[{"han":"教室","py":"jiàoshì","vi":"lớp học"}],[{"han":"上课的时候","py":"shàngkè de shíhou","vi":"trong giờ học"}],[{"han":"非常聪明","py":"fēicháng cōngming","vi":"vô cùng thông minh"},{"han":"成绩很好","py":"chéngjì hěn hǎo","vi":"thành tích tốt"},{"han":"学习挺努力的","py":"xuéxí tǐng nǔlì de","vi":"học khá chăm"},{"han":"教室不太大","py":"jiàoshì bú tài dà","vi":"lớp học không lớn lắm"}]]},{"id":"stdong","img":"media/B07-07.jpg","bai":7,"alt":"Nhà ăn rộng, rất đông người, cạnh ký túc xá","hints":[[{"han":"学生们","py":"xuéshengmen","vi":"các bạn sinh viên"},{"han":"留学生","py":"liúxuéshēng","vi":"du học sinh"}],[{"han":"学校食堂","py":"xuéxiào shítáng","vi":"nhà ăn của trường"},{"han":"宿舍旁边","py":"sùshè pángbiān","vi":"bên cạnh ký túc xá"}],[{"han":"中午","py":"zhōngwǔ","vi":"buổi trưa"},{"han":"吃饭的时候","py":"chīfàn de shíhou","vi":"giờ ăn"}],[{"han":"人非常多","py":"rén fēicháng duō","vi":"rất đông người"},{"han":"食堂挺大的","py":"shítáng tǐng dà de","vi":"nhà ăn khá rộng"},{"han":"离宿舍很近","py":"lí sùshè hěn jìn","vi":"gần ký túc xá"}]]},{"id":"xa","img":"media/B07-08.jpg","bai":7,"alt":"Một bạn đeo cặp đi trên con đường dài từ ký túc xá tới trường","hints":[[{"han":"学生","py":"xuésheng","vi":"học sinh, sinh viên"},{"han":"我","py":"wǒ","vi":"tôi"}],[{"han":"宿舍","py":"sùshè","vi":"ký túc xá"},{"han":"学校","py":"xuéxiào","vi":"trường học"},{"han":"路上","py":"lù shang","vi":"trên đường"}],[{"han":"早上","py":"zǎoshang","vi":"buổi sáng"}],[{"han":"宿舍离学校很远","py":"sùshè lí xuéxiào hěn yuǎn","vi":"ký túc xá cách trường rất xa"},{"han":"太远了","py":"tài yuǎn le","vi":"xa quá"},{"han":"很累","py":"hěn lèi","vi":"rất mệt"}]]},{"id":"phong3","img":"media/B07-09.jpg","bai":7,"alt":"Phòng ký túc xá có điều hòa, ti vi, máy tính","hints":[[{"han":"我和同屋","py":"wǒ hé tóngwū","vi":"tôi và bạn cùng phòng"}],[{"han":"宿舍里","py":"sùshè li","vi":"trong ký túc xá"}],[{"han":"现在","py":"xiànzài","vi":"bây giờ"}],[{"han":"有空调","py":"yǒu kōngtiáo","vi":"có điều hòa"},{"han":"有电视","py":"yǒu diànshì","vi":"có ti vi"},{"han":"有电脑","py":"yǒu diànnǎo","vi":"có máy tính"},{"han":"挺不错的","py":"tǐng búcuò de","vi":"khá tốt"}]]},{"id":"bk2","img":"media/B07-10.jpg","bai":7,"alt":"Simon đứng trong phòng ký túc xá, bạn Trung Quốc ở cửa","hints":[[{"han":"西蒙","py":"Xīméng","vi":"Simon"},{"han":"中国朋友","py":"Zhōngguó péngyou","vi":"bạn Trung Quốc"}],[{"han":"西蒙的宿舍","py":"Xīméng de sùshè","vi":"phòng ký túc xá của Simon"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"}],[{"han":"宿舍不太大","py":"sùshè bú tài dà","vi":"ký túc xá không lớn lắm"},{"han":"有空调","py":"yǒu kōngtiáo","vi":"có điều hòa"},{"han":"没有同屋","py":"méiyǒu tóngwū","vi":"không có bạn cùng phòng"},{"han":"离教室很近","py":"lí jiàoshì hěn jìn","vi":"gần lớp học"}]]},{"id":"nghe","img":"media/B07-11.jpg","bai":7,"alt":"Ba người nâng ly bên bàn ăn, Paul ở giữa cầm cốc bia","hints":[[{"han":"保罗","py":"Bǎoluó","vi":"Paul"},{"han":"我同屋","py":"wǒ tóngwū","vi":"bạn cùng phòng của tôi"},{"han":"好朋友","py":"hǎo péngyou","vi":"bạn thân"}],[{"han":"饭馆","py":"fànguǎn","vi":"quán ăn"}],[{"han":"晚上","py":"wǎnshang","vi":"buổi tối"}],[{"han":"个子很高","py":"gèzi hěn gāo","vi":"dáng rất cao"},{"han":"眼睛比较大","py":"yǎnjing bǐjiào dà","vi":"mắt khá to"},{"han":"喜欢喝啤酒","py":"xǐhuan hē píjiǔ","vi":"thích uống bia"},{"han":"很高兴","py":"hěn gāoxìng","vi":"rất vui"}]]},{"id":"ktxlop","img":"media/B07-12.jpg","bai":7,"alt":"Ký túc xá ngay cạnh lớp học, một bạn nhoài ra cửa sổ","hints":[[{"han":"学生","py":"xuésheng","vi":"học sinh, sinh viên"}],[{"han":"宿舍","py":"sùshè","vi":"ký túc xá"},{"han":"教室","py":"jiàoshì","vi":"lớp học"}],[{"han":"早上","py":"zǎoshang","vi":"buổi sáng"}],[{"han":"宿舍离教室很近","py":"sùshè lí jiàoshì hěn jìn","vi":"ký túc xá rất gần lớp học"},{"han":"不远","py":"bù yuǎn","vi":"không xa"},{"han":"非常近","py":"fēicháng jìn","vi":"vô cùng gần"}]]},{"id":"gan","img":"media/B07-13.jpg","bai":7,"alt":"Ký túc xá và nhà ăn sát nhau, một bạn bước vài bước là tới","hints":[[{"han":"学生","py":"xuésheng","vi":"học sinh, sinh viên"}],[{"han":"宿舍","py":"sùshè","vi":"ký túc xá"},{"han":"食堂","py":"shítáng","vi":"nhà ăn"}],[{"han":"中午","py":"zhōngwǔ","vi":"buổi trưa"}],[{"han":"食堂离宿舍比较近","py":"shítáng lí sùshè bǐjiào jìn","vi":"nhà ăn khá gần ký túc xá"},{"han":"去食堂吃饭","py":"qù shítáng chī fàn","vi":"đi nhà ăn ăn cơm"}]]},{"id":"bk3","img":"media/B07-14.jpg","bai":7,"alt":"Sân trường đông du học sinh, Simon và bạn Trung Quốc đi dạo gần nhà ăn","hints":[[{"han":"西蒙","py":"Xīméng","vi":"Simon"},{"han":"中国朋友","py":"Zhōngguó péngyou","vi":"bạn Trung Quốc"},{"han":"留学生们","py":"liúxuéshēngmen","vi":"các du học sinh"}],[{"han":"学校","py":"xuéxiào","vi":"trường học"},{"han":"食堂门口","py":"shítáng ménkǒu","vi":"cửa nhà ăn"}],[{"han":"下午","py":"xiàwǔ","vi":"buổi chiều"}],[{"han":"留学生挺多的","py":"liúxuéshēng tǐng duō de","vi":"du học sinh khá nhiều"},{"han":"食堂不错","py":"shítáng búcuò","vi":"nhà ăn khá tốt"},{"han":"学校很大","py":"xuéxiào hěn dà","vi":"trường rất rộng"}]]},{"id":"deptrai","img":"media/B07-15.jpg","bai":7,"alt":"Chàng trai mặc vest, tóc ngắn, đứng ở cổng trường","hints":[[{"han":"一个男生","py":"yí ge nánshēng","vi":"một bạn nam"},{"han":"我哥哥","py":"wǒ gēge","vi":"anh trai tôi"}],[{"han":"学校门口","py":"xuéxiào ménkǒu","vi":"cổng trường"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"}],[{"han":"挺帅的","py":"tǐng shuài de","vi":"khá đẹp trai"},{"han":"个子很高","py":"gèzi hěn gāo","vi":"dáng rất cao"},{"han":"头发不长","py":"tóufa bù cháng","vi":"tóc không dài"}]]},{"id":"toc","img":"media/B07-16.jpg","bai":7,"alt":"Cô gái tóc rất dài đứng dưới gốc cây trong trường","hints":[[{"han":"一个女孩","py":"yí ge nǚhái","vi":"một cô gái"},{"han":"我姐姐","py":"wǒ jiějie","vi":"chị gái tôi"}],[{"han":"学校里","py":"xuéxiào li","vi":"trong trường"},{"han":"树下","py":"shù xià","vi":"dưới gốc cây"}],[{"han":"下午","py":"xiàwǔ","vi":"buổi chiều"}],[{"han":"很漂亮","py":"hěn piàoliang","vi":"rất xinh"},{"han":"头发很长","py":"tóufa hěn cháng","vi":"tóc rất dài"},{"han":"眼睛很大","py":"yǎnjing hěn dà","vi":"mắt rất to"}]]},{"id":"cao","img":"media/B07-17.jpg","bai":7,"alt":"Nhóm bốn bạn, mỗi người một đặc điểm","hints":[[{"han":"四个同学","py":"sì ge tóngxué","vi":"bốn bạn học"},{"han":"好朋友","py":"hǎo péngyou","vi":"bạn thân"}],[{"han":"学校里","py":"xuéxiào li","vi":"trong trường"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"}],[{"han":"个子非常高","py":"gèzi fēicháng gāo","vi":"dáng vô cùng cao"},{"han":"头发很长","py":"tóufa hěn cháng","vi":"tóc rất dài"},{"han":"非常漂亮","py":"fēicháng piàoliang","vi":"vô cùng xinh"},{"han":"挺帅的","py":"tǐng shuài de","vi":"khá đẹp trai"},{"han":"个子不太高","py":"gèzi bú tài gāo","vi":"dáng không cao lắm"}]]},{"id":"lily","img":"media/B07-18.jpg","bai":7,"alt":"Lily tóc dài đứng cạnh bạn cùng phòng ở cửa ký túc xá","hints":[[{"han":"莉莉","py":"Lìli","vi":"Lily"},{"han":"她的同屋","py":"tā de tóngwū","vi":"bạn cùng phòng của cô ấy"}],[{"han":"宿舍门口","py":"sùshè ménkǒu","vi":"cửa ký túc xá"}],[{"han":"今天","py":"jīntiān","vi":"hôm nay"}],[{"han":"头发很长","py":"tóufa hěn cháng","vi":"tóc rất dài"},{"han":"眼睛很大","py":"yǎnjing hěn dà","vi":"mắt rất to"},{"han":"个子很高","py":"gèzi hěn gāo","vi":"dáng rất cao"},{"han":"有同屋","py":"yǒu tóngwū","vi":"có bạn cùng phòng"}]]}];
+const GRAMMAR = [{"bai":7,"name":"主谓谓语句 · Câu vị ngữ chủ vị","form":"S + 身体 / 学习 / 成绩… + (很 / 不) + tính từ","nameSeg":[["主谓谓语句","zhǔwèi wèiyǔ jù"],[" · Câu vị ngữ chủ vị",null]],"formSeg":[["S + ",null],["身体","shēntǐ"],[" / ",null],["学习","xuéxí"],[" / ",null],["成绩","chéngjì"],["… + (",null],["很","hěn"],[" / ",null],["不","bù"],[") + tính từ",null]]},{"bai":7,"name":"Câu hỏi với 吗","form":"Câu trần thuật + 吗？","nameSeg":[["Câu hỏi với ",null],["吗","ma"]],"formSeg":[["Câu trần thuật + ",null],["吗","ma"],["？",null]]},{"bai":7,"name":"正反疑问句 · Câu hỏi chính phản","form":"S + A + 不 + A？ · 有没有 + danh từ？","nameSeg":[["正反疑问句","zhèngfǎn yíwènjù"],[" · Câu hỏi chính phản",null]],"formSeg":[["S + A + ",null],["不","bù"],[" + A？ · ",null],["有没有","yǒu méiyǒu"],[" + danh từ？",null]]},{"bai":7,"name":"\"有\"字句 · Câu chữ 有","form":"Nơi chốn (+ 里) + 有 / 没有 + danh từ","nameSeg":[["\"",null],["有","yǒu"],["\"",null],["字句","zì jù"],[" · Câu chữ ",null],["有","yǒu"]],"formSeg":[["Nơi chốn (+ ",null],["里","li"],[") + ",null],["有","yǒu"],[" / ",null],["没有","méiyǒu"],[" + danh từ",null]]},{"bai":7,"name":"挺……的","form":"挺 + tính từ + 的","nameSeg":[["挺","tǐng"],["……",null],["的","de"]],"formSeg":[["挺","tǐng"],[" + tính từ + ",null],["的","de"]]},{"bai":7,"name":"怎么样","form":"Người / sự vật + 怎么样？","nameSeg":[["怎么样","zěnmeyàng"]],"formSeg":[["Người / sự vật + ",null],["怎么样","zěnmeyàng"],["？",null]]},{"bai":7,"name":"程度副词 · Phó từ chỉ mức độ","form":"非常 / 很 / 比较 / 不太 + tính từ · tính từ + 极了","nameSeg":[["程度副词","chéngdù fùcí"],[" · Phó từ chỉ mức độ",null]],"formSeg":[["非常","fēicháng"],[" / ",null],["很","hěn"],[" / ",null],["比较","bǐjiào"],[" / ",null],["不太","bú tài"],[" + tính từ · tính từ + ",null],["极了","jí le"]]}];
+const HINTNAMES = ["Nhân vật và mối quan hệ", "Nơi chốn", "Thời gian", "Sự kiện chính"];
+
+const $ = id => document.getElementById(id);
+const make = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const key = t => (t || "").replace(/[^一-鿿]/g, "");
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+const UPKEY = "liao-upto:" + location.pathname;
+let upTo = +store.get(UPKEY, 0);
+if (!LESSONS.some(l => l.n === upTo)) upTo = LESSONS[LESSONS.length - 1].n;
+let deck = [], pic = null, opened = new Set(), gram = null;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const pool = () => PICS.filter(p => p.bai <= upTo);
+
+function renderLessons() {
+  const box = $("lessons"); box.replaceChildren();
+  LESSONS.forEach(l => {
+    const b = make("button", "lesson" + (l.n < upTo ? " in" : "")); b.type = "button";
+    b.setAttribute("aria-pressed", String(l.n === upTo));
+    b.append(make("small", "", "Đến bài " + l.n), make("b", "", l.name));
+    b.onclick = () => { upTo = l.n; store.set(UPKEY, String(upTo)); deck = []; renderLessons(); if (pic && pic.bai > upTo) draw(); rollGram(); updateCount(); };
+    box.append(b);
+  });
+}
+
+function renderHintBtns() {
+  const box = $("hbtns"); box.replaceChildren();
+  HINTNAMES.forEach((n, i) => {
+    const b = make("button", "hbtn", String(i + 1)); b.type = "button";
+    b.setAttribute("aria-label", "Gợi ý " + (i + 1) + ": " + n); b.title = n;
+    b.setAttribute("aria-pressed", String(opened.has(i)));
+    b.onclick = () => { if (!pic) draw(); opened.has(i) ? opened.delete(i) : opened.add(i); renderHintBtns(); renderHints(); };
+    box.append(b);
+  });
+}
+
+function chip(w) {
+  const b = make("span", "chip");
+  b.append(make("span", "p", w.py), make("span", "h", w.han), make("span", "v", w.vi));
+  b.querySelector(".h").lang = "zh-CN";
+  return b;
+}
+function renderHints() {
+  const box = $("hints"); box.replaceChildren();
+  if (!pic) { box.append(make("p", "tip", "Rút hình trước, rồi mở từng gợi ý khi cần.")); return; }
+  if (!opened.size) { box.append(make("p", "tip", "Thử tự nói trước. Bí thì bấm số 1, 2, 3, 4 trên mẩu giấy ghim.")); return; }
+  [...opened].sort().forEach(i => {
+    const sec = make("div", "hint");
+    sec.append(make("h4", "", "Gợi ý " + (i + 1) + " · " + HINTNAMES[i]));
+    const c = make("div", "chips"); pic.hints[i].forEach(w => c.append(chip(w)));
+    sec.append(c); box.append(sec);
+  });
+}
+
+/* Chữ Hán trong tên và công thức ngữ pháp: phiên âm đặt ngay phía trên */
+function segs(el, list) {
+  list.forEach(([t, py]) => {
+    if (!py) { el.append(t); return; }
+    const z = make("span", "zp"), i = make("i", "", py), b = make("b", "", t);
+    b.lang = "zh-CN"; z.append(i, b); el.append(z);
+  });
+  return el;
+}
+function rollGram() {
+  const list = GRAMMAR.filter(g => g.bai <= upTo && g !== gram);
+  gram = list[Math.floor(Math.random() * list.length)] || gram;
+  const box = $("gram"); box.replaceChildren();
+  if (!gram) return;
+  box.append(segs(make("div", "gname"), gram.nameSeg), segs(make("div", "form"), gram.formSeg));
+}
+
+function clearPic() { pic = null; opened.clear(); $("frame").replaceChildren(Object.assign(make("div", "empty"), { innerHTML: "Bấm nút 聊<br>để rút một bức hình" })); renderHintBtns(); renderHints(); }
+function updateCount() { const n = pool().length; $("count").textContent = pic ? `Hình ${n - deck.length}/${n} trong lượt rút` : `${n} hình trong phạm vi đã chọn`; }
+
+function draw() {
+  if (!deck.length) { deck = shuffle(pool().slice()); if (pic && deck.length > 1 && deck[deck.length - 1] === pic) deck.unshift(deck.pop()); }
+  pic = deck.pop(); opened.clear();
+  const img = make("img"); img.src = pic.img; img.alt = pic.alt;
+  $("frame").replaceChildren(img);
+  const d = $("dice"); d.classList.remove("spin"); void d.offsetWidth; d.classList.add("spin");
+  renderHintBtns(); renderHints(); rollGram(); updateCount();
+}
+
+$("dice").onclick = draw;
+$("regram").onclick = rollGram;
+renderLessons(); draw();
+</script>
+</body>
+</html>
